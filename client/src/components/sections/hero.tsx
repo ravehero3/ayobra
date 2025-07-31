@@ -1,0 +1,74 @@
+import { motion } from "framer-motion";
+import { Download } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
+export default function Hero() {
+  return (
+    <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto text-center">
+        <motion.h1
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="text-5xl md:text-7xl font-bold mb-6 leading-tight"
+        >
+          Create Professional<br />
+          <span className="text-gradient">Type Beat Videos</span><br />
+          in Minutes
+        </motion.h1>
+
+        <motion.p
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="text-xl md:text-2xl text-[hsl(0,0%,62.7%)] mb-12 max-w-3xl mx-auto leading-relaxed"
+        >
+          The ultimate desktop app for music producers. Drag, drop, and generate stunning type beat videos with waveform visualization and custom layouts.
+        </motion.p>
+
+        {/* Download Buttons */}
+        <motion.div
+          id="download"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16"
+        >
+          <Button
+            size="lg"
+            className="bg-[hsl(217,91%,60%)] hover:bg-[hsl(214,95%,68%)] text-white px-8 py-4 text-lg font-semibold flex items-center space-x-3 transition-all transform hover:scale-105"
+            data-testid="download-mac"
+          >
+            <Download className="w-6 h-6" />
+            <span>Download for Mac</span>
+          </Button>
+          <Button
+            size="lg"
+            variant="outline"
+            className="bg-[hsl(0,0%,10%)] hover:bg-[hsl(0,0%,16%)] border border-[hsl(0,0%,16%)] text-white px-8 py-4 text-lg font-semibold flex items-center space-x-3 transition-all transform hover:scale-105"
+            data-testid="download-windows"
+          >
+            <Download className="w-6 h-6" />
+            <span>Download for Windows</span>
+          </Button>
+        </motion.div>
+
+        {/* App Preview */}
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.6 }}
+          className="relative"
+        >
+          <img
+            src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1200&h=800"
+            alt="TypeBeat Studio app interface showing drag-and-drop audio and image pairing"
+            className="rounded-2xl shadow-2xl mx-auto border border-[hsl(0,0%,16%)]"
+            data-testid="app-preview-image"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[hsl(0,0%,4%)] via-transparent to-transparent rounded-2xl"></div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
