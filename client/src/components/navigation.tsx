@@ -37,14 +37,16 @@ export default function Navigation() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-[hsl(217,91%,60%)] rounded-lg flex items-center justify-center">
-              <FolderOpen className="w-5 h-5 text-white" />
-            </div>
+            <img 
+              src="/logo.png" 
+              alt="TypeBeat Studio Logo" 
+              className="w-8 h-8 object-contain"
+            />
             <span className="text-xl font-bold">TypeBeat Studio</span>
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-8 absolute left-1/2 transform -translate-x-1/2">
             <button
               onClick={() => scrollToSection("features")}
               className="text-[hsl(0,0%,62.7%)] hover:text-white transition-colors"
