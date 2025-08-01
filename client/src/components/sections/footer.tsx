@@ -64,7 +64,7 @@ export default function Footer() {
               data-testid="contact-email"
             >
               <Mail className="w-4 h-4" />
-              <span>support@typebeatstudio.com</span>
+              <span>typebeatz@voodoo808.com</span>
             </a>
           </motion.div>
 
