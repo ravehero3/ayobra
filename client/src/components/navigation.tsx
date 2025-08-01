@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { FolderOpen, Menu, X, User } from "lucide-react";
+import { FolderOpen, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button"
 import { useLocation } from "wouter";
+import { UserIcon } from "@/components/ui/user-icon";
 
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -62,14 +63,14 @@ export default function Navigation() {
           {/* User Icon */}
           <div className="hidden md:flex items-center">
             <button className="p-2 hover:bg-framer-surface transition-colors rounded-md">
-              <User className="w-6 h-6 text-framer-muted hover:text-framer-text transition-colors" />
+              <UserIcon size={24} />
             </button>
           </div>
 
           {/* Mobile Icons */}
           <div className="md:hidden flex items-center space-x-3">
             <button className="p-2 hover:bg-framer-surface transition-colors rounded-md">
-              <User className="w-5 h-5 text-framer-muted hover:text-framer-text transition-colors" />
+              <UserIcon size={20} />
             </button>
             <button
               className="text-white"
