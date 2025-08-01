@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { FolderOpen, Menu, X } from "lucide-react";
+import { FolderOpen, Menu, X, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function Navigation() {
@@ -61,23 +61,30 @@ export default function Navigation() {
             >
               Pricing
             </button>
-            <Button
-              onClick={() => scrollToSection("download")}
-              className="bg-[hsl(217,91%,60%)] hover:bg-[hsl(214,95%,68%)] text-white"
-              data-testid="nav-download"
-            >
-              Download
-            </Button>
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            className="md:hidden text-white"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            data-testid="mobile-menu-toggle"
-          >
-            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
+          {/* User Icon */}
+          <div className="hidden md:flex items-center">
+            <button className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center hover:bg-gray-400 transition-colors">
+              <svg className="w-5 h-5 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+              </svg>
+            </button>
+          </div>
+
+          {/* Mobile Icons */}
+          <div className="md:hidden flex items-center space-x-3">
+            <button className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center hover:bg-gray-400 transition-colors">
+              <User className="w-4 h-4 text-gray-600" />
+            </button>
+            <button
+              className="text-white"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              data-testid="mobile-menu-toggle"
+            >
+              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Menu */}
@@ -102,13 +109,6 @@ export default function Navigation() {
                 data-testid="mobile-nav-pricing"
               >
                 Pricing
-              </button>
-              <button
-                onClick={() => scrollToSection("download")}
-                className="block px-3 py-2 text-[hsl(217,91%,60%)] hover:text-[hsl(214,95%,68%)] transition-colors"
-                data-testid="mobile-nav-download"
-              >
-                Download
               </button>
             </div>
           </motion.div>

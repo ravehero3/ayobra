@@ -43,18 +43,16 @@ export default function Hero() {
         >
           <Button
             size="sm"
-            className="bg-white hover:bg-gray-100 text-black px-4 py-2 text-sm font-semibold flex items-center space-x-2 transition-all transform hover:scale-105 rounded-full w-[6vw] min-w-fit"
+            className="bg-white hover:bg-gray-100 text-black px-4 py-2 text-sm font-semibold transition-all transform hover:scale-105 rounded-full w-[6vw] min-w-fit"
             data-testid="download-mac"
           >
-            <Download className="w-4 h-4" />
             <span>Download for Mac</span>
           </Button>
           <Button
             size="sm"
-            className="bg-white hover:bg-gray-100 text-black px-4 py-2 text-sm font-semibold flex items-center space-x-2 transition-all transform hover:scale-105 rounded-full w-[6vw] min-w-fit"
+            className="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 text-sm font-semibold transition-all transform hover:scale-105 rounded-full w-[6vw] min-w-fit"
             data-testid="download-windows"
           >
-            <Download className="w-4 h-4" />
             <span>Download for Windows</span>
           </Button>
         </motion.div>
