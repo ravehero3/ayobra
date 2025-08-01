@@ -63,14 +63,14 @@ export default function Navigation() {
           {/* User Icon */}
           <div className="hidden md:flex items-center">
             <button className="p-2 hover:bg-framer-surface transition-colors rounded-md">
-              <UserIcon size={24} />
+              <UserIcon size={32} />
             </button>
           </div>
 
           {/* Mobile Icons */}
           <div className="md:hidden flex items-center space-x-3">
             <button className="p-2 hover:bg-framer-surface transition-colors rounded-md">
-              <UserIcon size={20} />
+              <UserIcon size={28} />
             </button>
             <button
               className="text-white"

@@ -8,21 +8,19 @@ interface UserIconProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const UserIcon = React.forwardRef<HTMLDivElement, UserIconProps>(
-  ({ className, size = 24, ...props }, ref) => {
+  ({ className, size = 32, ...props }, ref) => {
     return (
       <div
         ref={ref}
         className={cn(
-          "flex items-center justify-center rounded-full transition-colors cursor-pointer",
-          "bg-white hover:bg-gray-400 text-black",
+          "flex items-center justify-center transition-colors cursor-pointer text-white",
           className
         )}
-        style={{ width: size, height: size }}
         {...props}
       >
         <svg
-          width={size * 0.6}
-          height={size * 0.6}
+          width={size}
+          height={size}
           viewBox="0 0 24 24"
           fill="currentColor"
           xmlns="http://www.w3.org/2000/svg"
