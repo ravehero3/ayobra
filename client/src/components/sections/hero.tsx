@@ -42,20 +42,19 @@ export default function Hero() {
           className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16"
         >
           <Button
-            size="lg"
-            className="bg-white hover:bg-gray-100 text-black px-8 py-4 text-lg font-semibold flex items-center space-x-3 transition-all transform hover:scale-105 rounded-full w-[6vw] min-w-fit"
+            size="sm"
+            className="bg-white hover:bg-gray-100 text-black px-4 py-2 text-sm font-semibold flex items-center space-x-2 transition-all transform hover:scale-105 rounded-full w-[6vw] min-w-fit"
             data-testid="download-mac"
           >
-            <Download className="w-6 h-6" />
+            <Download className="w-4 h-4" />
             <span>Download for Mac</span>
           </Button>
           <Button
-            size="lg"
-            variant="outline"
-            className="bg-[hsl(0,0%,10%)] hover:bg-[hsl(0,0%,16%)] border border-[hsl(0,0%,16%)] text-white px-8 py-4 text-lg font-semibold flex items-center space-x-3 transition-all transform hover:scale-105"
+            size="sm"
+            className="bg-white hover:bg-gray-100 text-black px-4 py-2 text-sm font-semibold flex items-center space-x-2 transition-all transform hover:scale-105 rounded-full w-[6vw] min-w-fit"
             data-testid="download-windows"
           >
-            <Download className="w-6 h-6" />
+            <Download className="w-4 h-4" />
             <span>Download for Windows</span>
           </Button>
         </motion.div>
