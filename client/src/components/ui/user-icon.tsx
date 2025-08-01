@@ -13,7 +13,7 @@ const UserIcon = React.forwardRef<HTMLDivElement, UserIconProps>(
       <div
         ref={ref}
         className={cn(
-          "flex items-center justify-center transition-colors cursor-pointer text-white",
+          "flex items-center justify-center transition-colors cursor-pointer text-white hover:text-white/50",
           className
         )}
         {...props}

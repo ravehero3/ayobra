@@ -62,16 +62,12 @@ export default function Navigation() {
 
           {/* User Icon */}
           <div className="hidden md:flex items-center">
-            <button className="p-2 hover:bg-framer-surface transition-colors rounded-md">
-              <UserIcon size={32} />
-            </button>
+            <UserIcon size={32} />
           </div>
 
           {/* Mobile Icons */}
           <div className="md:hidden flex items-center space-x-3">
-            <button className="p-2 hover:bg-framer-surface transition-colors rounded-md">
-              <UserIcon size={28} />
-            </button>
+            <UserIcon size={28} />
             <button
               className="text-white"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
