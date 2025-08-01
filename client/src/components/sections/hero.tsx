@@ -46,6 +46,7 @@ export default function Hero() {
             className="bg-white hover:bg-gray-100 text-black px-4 py-2 text-sm font-semibold transition-all transform hover:scale-105 rounded-full w-[6vw] min-w-fit"
             data-testid="download-mac"
           >
+            <Download className="w-4 h-4 mr-2" />
             <span>Download for Mac</span>
           </Button>
           <Button
@@ -53,6 +54,7 @@ export default function Hero() {
             className="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 text-sm font-semibold transition-all transform hover:scale-105 rounded-full w-[6vw] min-w-fit"
             data-testid="download-windows"
           >
+            <Download className="w-4 h-4 mr-2" />
             <span>Download for Windows</span>
           </Button>
         </motion.div>
