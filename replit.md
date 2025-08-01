@@ -2,11 +2,12 @@
 
 ## Overview
 
-This is a full-stack web application for creating type beat videos by pairing audio files with images. The application features a modern React frontend with a dark glassmorphism theme and an Express.js backend. It's designed to help music producers create professional-looking videos for their type beats with minimal effort.
+This is a clean marketing landing page for TypeBeatz, designed to showcase the desktop application for creating type beat videos. The landing page features a modern React frontend with a dark glassmorphism theme and an Express.js backend for serving static content. It's focused purely on marketing and branding without any video generation functionality.
 
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
+Project focus: Clean marketing landing page only - absolutely no video generation functionality.
 
 ## System Architecture
 
