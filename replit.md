@@ -79,15 +79,15 @@ Project focus: Clean marketing landing page only - absolutely no video generatio
 
 ### Development Environment
 - **Frontend**: Vite dev server with HMR on client directory
-- **Backend**: tsx for TypeScript execution with hot reload
-- **Database**: Drizzle push command for schema synchronization
+- **Backend**: tsx for TypeScript execution with hot reload (development only)
 - **Environment**: NODE_ENV=development with debug logging
 
-### Production Build
-1. **Frontend Build**: Vite builds React app to dist/public
-2. **Backend Build**: esbuild bundles server code to dist/index.js
-3. **Static Serving**: Express serves built frontend files
-4. **Database**: Production PostgreSQL connection via DATABASE_URL
+### Production Deployment (Vercel)
+- **Live URL**: https://typebeatz.vercel.app/
+- **Platform**: Vercel static hosting
+- **Build Process**: `vite build` creates optimized static files in `dist/public`
+- **Configuration**: `vercel.json` handles routing and build settings
+- **Deployment**: Automatic via GitHub integration
 
 ### Configuration Management
 - **Environment Variables**: DATABASE_URL for database connection
