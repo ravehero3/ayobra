@@ -43,7 +43,7 @@ export default function Hero() {
         >
           <Button
             size="lg"
-            className="bg-[hsl(217,91%,60%)] hover:bg-[hsl(214,95%,68%)] text-white px-8 py-4 text-lg font-semibold flex items-center space-x-3 transition-all transform hover:scale-105"
+            className="bg-white hover:bg-gray-100 text-black px-8 py-4 text-lg font-semibold flex items-center space-x-3 transition-all transform hover:scale-105 rounded-full w-[6vw] min-w-fit"
             data-testid="download-mac"
           >
             <Download className="w-6 h-6" />
