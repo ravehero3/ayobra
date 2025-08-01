@@ -28,7 +28,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-xl md:text-2xl text-[hsl(0,0%,62.7%)] mb-12 max-w-3xl mx-auto leading-relaxed"
+          className="text-xl md:text-2xl text-framer-muted mb-12 max-w-3xl mx-auto leading-relaxed"
         >
           The ultimate desktop app for music producers. Drag, drop, and generate stunning type beat videos with waveform visualization and custom layouts.
         </motion.p>
@@ -43,7 +43,7 @@ export default function Hero() {
         >
           <Button
             size="sm"
-            className="bg-white hover:bg-gray-100 text-black px-4 py-2 text-sm font-semibold transition-all transform hover:scale-105 rounded-full w-[6vw] min-w-fit"
+            className="bg-framer-gradient hover:bg-framer-gradient-hover text-white px-6 py-3 text-sm font-semibold transition-all transform hover:scale-105 rounded-full shadow-lg"
             data-testid="download-mac"
           >
             <Download className="w-4 h-4 mr-2" />
@@ -51,7 +51,7 @@ export default function Hero() {
           </Button>
           <Button
             size="sm"
-            className="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 text-sm font-semibold transition-all transform hover:scale-105 rounded-full w-[6vw] min-w-fit"
+            className="bg-framer-surface hover:bg-framer-border text-framer-text px-6 py-3 text-sm font-semibold transition-all transform hover:scale-105 rounded-full border border-framer-border"
             data-testid="download-windows"
           >
             <Download className="w-4 h-4 mr-2" />
@@ -69,10 +69,10 @@ export default function Hero() {
           <img
             src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1200&h=800"
             alt="TypeBeat Studio app interface showing drag-and-drop audio and image pairing"
-            className="rounded-2xl shadow-2xl mx-auto border border-[hsl(0,0%,16%)]"
+            className="rounded-2xl shadow-2xl mx-auto border border-framer-border"
             data-testid="app-preview-image"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[hsl(0,0%,4%)] via-transparent to-transparent rounded-2xl"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-[var(--framer-background)] via-transparent to-transparent rounded-2xl"></div>
         </motion.div>
       </div>
     </section>

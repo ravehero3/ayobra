@@ -46,7 +46,7 @@ export default function Features() {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-4">Powerful Features</h2>
-          <p className="text-xl text-[hsl(0,0%,62.7%)] max-w-2xl mx-auto">
+          <p className="text-xl text-framer-muted max-w-2xl mx-auto">
             Everything you need to create professional type beat videos with ease and speed.
           </p>
         </motion.div>
@@ -59,14 +59,14 @@ export default function Features() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: index * 0.2 }}
               viewport={{ once: true }}
-              className="bg-[hsl(0,0%,10%)] border border-[hsl(0,0%,16%)] rounded-xl p-8 hover:border-[hsl(217,91%,60%)]/50 transition-all"
+              className="bg-framer-surface border border-framer-border rounded-xl p-8 hover:border-framer-gradient-start/50 transition-all"
               data-testid={`feature-card-${index}`}
             >
-              <div className="w-12 h-12 bg-[hsl(217,91%,60%)] rounded-lg flex items-center justify-center mb-6">
+              <div className="w-12 h-12 bg-framer-gradient rounded-lg flex items-center justify-center mb-6">
                 <feature.icon className="w-6 h-6 text-white" />
               </div>
               <h3 className="text-xl font-semibold mb-4">{feature.title}</h3>
-              <p className="text-[hsl(0,0%,62.7%)]">{feature.description}</p>
+              <p className="text-framer-muted">{feature.description}</p>
             </motion.div>
           ))}
         </div>

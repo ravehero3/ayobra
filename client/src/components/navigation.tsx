@@ -30,7 +30,7 @@ export default function Navigation() {
       animate={{ y: 0 }}
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${
         isScrolled
-          ? "bg-[hsl(0,0%,4%)]/80 backdrop-blur-md border-b border-[hsl(0,0%,16%)]"
+          ? "bg-framer-background/80 backdrop-blur-md border-b border-framer-border"
           : "bg-transparent"
       }`}
     >
@@ -44,14 +44,14 @@ export default function Navigation() {
           <div className="hidden md:flex items-center space-x-8 absolute left-1/2 transform -translate-x-1/2">
             <button
               onClick={() => scrollToSection("features")}
-              className="text-[hsl(0,0%,62.7%)] hover:text-white transition-colors"
+              className="text-framer-muted hover:text-framer-text transition-colors"
               data-testid="nav-features"
             >
               Features
             </button>
             <button
               onClick={() => scrollToSection("pricing")}
-              className="text-[hsl(0,0%,62.7%)] hover:text-white transition-colors"
+              className="text-framer-muted hover:text-framer-text transition-colors"
               data-testid="nav-pricing"
             >
               Pricing
@@ -60,15 +60,15 @@ export default function Navigation() {
 
           {/* User Icon */}
           <div className="hidden md:flex items-center">
-            <button className="p-2 hover:bg-[hsl(0,0%,16%)] transition-colors rounded-md">
-              <User className="w-6 h-6 text-[hsl(0,0%,62.7%)] hover:text-white transition-colors" />
+            <button className="p-2 hover:bg-framer-surface transition-colors rounded-md">
+              <User className="w-6 h-6 text-framer-muted hover:text-framer-text transition-colors" />
             </button>
           </div>
 
           {/* Mobile Icons */}
           <div className="md:hidden flex items-center space-x-3">
-            <button className="p-2 hover:bg-[hsl(0,0%,16%)] transition-colors rounded-md">
-              <User className="w-5 h-5 text-[hsl(0,0%,62.7%)] hover:text-white transition-colors" />
+            <button className="p-2 hover:bg-framer-surface transition-colors rounded-md">
+              <User className="w-5 h-5 text-framer-muted hover:text-framer-text transition-colors" />
             </button>
             <button
               className="text-white"
@@ -86,19 +86,19 @@ export default function Navigation() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-[hsl(0,0%,10%)] border-t border-[hsl(0,0%,16%)]"
+            className="md:hidden bg-framer-surface border-t border-framer-border"
           >
             <div className="px-2 pt-2 pb-3 space-y-1">
               <button
                 onClick={() => scrollToSection("features")}
-                className="block px-3 py-2 text-[hsl(0,0%,62.7%)] hover:text-white transition-colors"
+                className="block px-3 py-2 text-framer-muted hover:text-framer-text transition-colors"
                 data-testid="mobile-nav-features"
               >
                 Features
               </button>
               <button
                 onClick={() => scrollToSection("pricing")}
-                className="block px-3 py-2 text-[hsl(0,0%,62.7%)] hover:text-white transition-colors"
+                className="block px-3 py-2 text-framer-muted hover:text-framer-text transition-colors"
                 data-testid="mobile-nav-pricing"
               >
                 Pricing

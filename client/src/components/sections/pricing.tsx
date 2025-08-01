@@ -46,7 +46,7 @@ export default function Pricing() {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-4">Simple Pricing</h2>
-          <p className="text-xl text-[hsl(0,0%,62.7%)]">Start free, upgrade when you need more power.</p>
+          <p className="text-xl text-framer-muted">Start free, upgrade when you need more power.</p>
         </motion.div>
 
         <div className="grid md:grid-cols-2 gap-8">
@@ -59,14 +59,14 @@ export default function Pricing() {
               viewport={{ once: true }}
               className={`relative rounded-2xl p-8 ${
                 tier.popular
-                  ? "bg-gradient-to-br from-[hsl(217,91%,60%)]/10 to-[hsl(214,95%,68%)]/5 border border-[hsl(217,91%,60%)]/30"
-                  : "bg-[hsl(0,0%,10%)] border border-[hsl(0,0%,16%)]"
+                  ? "bg-gradient-to-br from-framer-gradient-start/10 to-framer-gradient-end/5 border border-framer-gradient-start/30"
+                  : "bg-framer-surface border border-framer-border"
               }`}
               data-testid={`pricing-tier-${tier.name.toLowerCase()}`}
             >
               {tier.popular && (
                 <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                  <span className="bg-[hsl(217,91%,60%)] text-white px-4 py-1 rounded-full text-sm font-semibold">
+                  <span className="bg-framer-gradient text-white px-4 py-1 rounded-full text-sm font-semibold">
                     Most Popular
                   </span>
                 </div>

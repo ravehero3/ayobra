@@ -11,6 +11,16 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       colors: {
+        // Framer-inspired color palette
+        framer: {
+          'gradient-start': '#00AAFF',
+          'gradient-end': '#0055FF',
+          'background': '#0F111A',
+          'surface': '#1E2030',
+          'muted': '#8A8FAD',
+          'text': '#FFFFFF',
+          'border': '#2A2D44',
+        },
         background: "var(--background)",
         foreground: "var(--foreground)",
         card: {
@@ -61,6 +71,10 @@ export default {
           border: "var(--sidebar-border)",
           ring: "var(--sidebar-ring)",
         },
+      },
+      backgroundImage: {
+        'framer-gradient': 'linear-gradient(135deg, #00AAFF 0%, #0055FF 100%)',
+        'framer-gradient-hover': 'linear-gradient(135deg, #1AB6FF 0%, #1060FF 100%)',
       },
       keyframes: {
         "accordion-down": {

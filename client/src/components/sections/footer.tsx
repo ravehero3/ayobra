@@ -39,7 +39,7 @@ const socialLinks = [
 
 export default function Footer() {
   return (
-    <footer className="py-16 px-4 sm:px-6 lg:px-8 border-t border-[hsl(0,0%,16%)]">
+    <footer className="py-16 px-4 sm:px-6 lg:px-8 border-t border-framer-border">
       <div className="max-w-6xl mx-auto">
         <div className="grid md:grid-cols-4 gap-8 mb-12">
           <motion.div
@@ -50,17 +50,17 @@ export default function Footer() {
             className="col-span-2 md:col-span-1"
           >
             <div className="flex items-center space-x-2 mb-4">
-              <div className="w-8 h-8 bg-[hsl(217,91%,60%)] rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 bg-framer-gradient rounded-lg flex items-center justify-center">
                 <FolderOpen className="w-5 h-5 text-white" />
               </div>
               <span className="text-xl font-bold">TypeBeat Studio</span>
             </div>
-            <p className="text-[hsl(0,0%,62.7%)] mb-4">
+            <p className="text-framer-muted mb-4">
               The ultimate desktop app for creating professional type beat videos.
             </p>
             <a
               href="mailto:support@typebeatstudio.com"
-              className="text-[hsl(217,91%,60%)] hover:text-[hsl(214,95%,68%)] transition-colors flex items-center space-x-2"
+              className="text-framer-gradient-start hover:text-framer-gradient-end transition-colors flex items-center space-x-2"
               data-testid="contact-email"
             >
               <Mail className="w-4 h-4" />
