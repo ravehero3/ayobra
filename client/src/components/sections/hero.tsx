@@ -4,8 +4,15 @@ import { Button } from "@/components/ui/button";
 
 export default function Hero() {
   return (
-    <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-6xl mx-auto text-center">
+    <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 relative">
+      {/* Background Image */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-30"
+        style={{ backgroundImage: 'url(/hero-bg.jpg)' }}
+      ></div>
+      
+      {/* Content */}
+      <div className="max-w-6xl mx-auto text-center relative z-10">
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
