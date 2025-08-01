@@ -1,0 +1,119 @@
+“Code only” means Vercel is just dumping your repo contents instead of serving a built site. Here’s what to do **in the Replit shell** step by step to diagnose & fix it:
+
+### 1. Inspect your `package.json` and confirm scripts
+
+```bash
+cat package.json | head -n 120
+```
+
+(If it's longer, you can just open it in the editor too.)
+You need at least:
+
+```json
+"scripts": {
+  "dev": "vite",
+  "build": "vite build",
+  "preview": "vite preview"
+}
+```
+
+If those are missing, add them.
+
+### 2. Make sure you have Vite & Tailwind installed
+
+```bash
+npm install
+```
+
+If Tailwind isn’t set up yet, scaffold minimal config:
+
+```bash
+npx tailwindcss init -p
+```
+
+Then in `tailwind.config.js` ensure `content` includes your source files, e.g.:
+
+```js
+module.exports = {
+  content: ["./index.html", "./src/**/*.{js,jsx,ts,tsx}"],
+  theme: { extend: {} },
+  plugins: [],
+}
+```
+
+And in your CSS entry (e.g., `src/index.css` or similar):
+
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
+
+Ensure that CSS is imported in your entrypoint (e.g., `main.jsx` or `index.jsx`).
+
+### 3. Run a local build to confirm it produces output
+
+```bash
+npm run build
+```
+
+You should see a `dist/` directory created. List it to verify:
+
+```bash
+ls -R dist | head -n 60
+```
+
+### 4. Commit the working build config / any fixes and push
+
+```bash
+git add .
+git commit -m "Fix Vite build scripts / landing page config"
+git push origin main
+```
+
+### 5. Ensure Vercel is using the correct build settings
+
+In the Vercel dashboard for your project, confirm:
+
+* **Framework preset:** Vite (keep it)
+* **Build Command:** `npm run build`
+* **Output Directory:** `dist`
+
+If those were wrong, correct them and trigger a redeploy (you can also force it via):
+
+```bash
+vercel --prod
+```
+
+(from where you’ve logged in, if using CLI; otherwise push to GitHub and let Vercel auto-deploy)
+
+### 6. (Optional) Add a `vercel.json` to be explicit
+
+Create `vercel.json` in repo root with:
+
+```json
+{
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": { "distDir": "dist" }
+    }
+  ],
+  "routes": [
+    { "src": "/(.*)", "dest": "/index.html" }
+  ]
+}
+```
+
+Then commit & push:
+
+```bash
+git add vercel.json
+git commit -m "Add vercel.json to force static build routing"
+git push
+```
+
+---
+
+If you paste the relevant part of your `package.json` here (or I can help you with a minimal one), I’ll tailor the exact edits. Do you want me to generate a minimal Vite+React+Tailwind starter `package.json` and config to drop into your repo?
