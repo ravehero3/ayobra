@@ -27,7 +27,7 @@ export default function ResetComplete() {
   const [, navigate] = useLocation();
   const [isLoading, setIsLoading] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
-  const { updatePassword, user } = useAuth();
+  const { updatePassword, user, refreshAuth } = useAuth();
   const { toast } = useToast();
 
   const {
@@ -39,15 +39,45 @@ export default function ResetComplete() {
   });
 
   useEffect(() => {
-    // Check if user is authenticated via the reset link
-    if (!user) {
-      // If no user is authenticated, redirect to home after a delay
-      const timer = setTimeout(() => {
-        navigate('/');
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [user, navigate]);
+    // Handle authentication from URL hash (Supabase redirect)
+    const handleAuthFromUrl = async () => {
+      const hashParams = new URLSearchParams(window.location.hash.substring(1));
+      const accessToken = hashParams.get('access_token');
+      const refreshToken = hashParams.get('refresh_token');
+      
+      if (accessToken && refreshToken) {
+        try {
+          const { data, error } = await authService.setSession({
+            access_token: accessToken,
+            refresh_token: refreshToken
+          });
+          
+          if (error) {
+            console.error('Error setting session:', error);
+            navigate('/');
+            return;
+          }
+          
+          // Clear the hash from URL for security
+          window.history.replaceState({}, document.title, window.location.pathname);
+          
+          // Refresh auth state
+          await refreshAuth();
+        } catch (error) {
+          console.error('Error handling auth tokens:', error);
+          navigate('/');
+        }
+      } else if (!user) {
+        // If no tokens and no user, redirect to home after a delay
+        const timer = setTimeout(() => {
+          navigate('/');
+        }, 3000);
+        return () => clearTimeout(timer);
+      }
+    };
+
+    handleAuthFromUrl();
+  }, [user, navigate, refreshAuth]);
 
   const onSubmit = async (data: ResetPasswordFormData) => {
     setIsLoading(true);

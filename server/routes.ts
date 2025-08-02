@@ -174,10 +174,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Password reset completion route
+  // Handle password reset redirects - let React app handle the route
   app.get('/auth/reset-complete', async (req, res) => {
-    // Serve the React app which will handle the password reset completion
-    res.redirect('/auth/reset-complete');
+    // Forward all query params and hash to the client
+    const queryString = req.url.includes('?') ? req.url.split('?')[1] : '';
+    res.redirect(`/#/auth/reset-complete${queryString ? '?' + queryString : ''}`);
   });
 
   // Serve uploaded files

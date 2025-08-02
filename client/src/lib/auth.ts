@@ -111,11 +111,8 @@ export const authService = {
       };
     }
 
-    // Get the current app URL dynamically
-    const appUrl = window.location.origin;
-    
     const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${appUrl}/auth/reset-complete`
+      redirectTo: 'https://typebeatz.voodoo808.com/auth/reset-complete'
     });
 
     return { data, error };
