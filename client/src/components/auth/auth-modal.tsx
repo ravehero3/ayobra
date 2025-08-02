@@ -28,6 +28,7 @@ export function AuthModal({ isOpen, onClose, defaultMode = 'signin' }: AuthModal
   const [loading, setLoading] = useState(false);
   const { signIn, signUp } = useAuth();
   const { toast } = useToast();
+  const [showSignUpOption, setShowSignUpOption] = useState(false);
 
   const form = useForm<AuthFormData>({
     resolver: zodResolver(authSchema),
@@ -83,10 +84,44 @@ export function AuthModal({ isOpen, onClose, defaultMode = 'signin' }: AuthModal
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[425px] bg-black/90 border-gray-800">
         <DialogHeader>
-          <DialogTitle className="text-white text-center">
-            {mode === 'signin' ? 'Sign In' : 'Create Account'}
+          <DialogTitle className="text-white text-center text-2xl">
+            Welcome to TypeBeatz
           </DialogTitle>
         </DialogHeader>
+
+        {!showSignUpOption && mode === 'signin' ? (
+          <div className="space-y-4">
+            <p className="text-gray-400 text-center">
+              Choose how you'd like to continue
+            </p>
+            
+            <div className="space-y-3">
+              <Button
+                onClick={() => setShowSignUpOption(true)}
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white h-12"
+              >
+                Sign In to Your Account
+              </Button>
+              
+              <Button
+                onClick={() => {
+                  setMode('signup');
+                  setShowSignUpOption(true);
+                }}
+                variant="outline"
+                className="w-full border-gray-600 text-white hover:bg-gray-800 h-12"
+              >
+                Create New Account
+              </Button>
+            </div>
+          </div>
+        ) : (
+        <div className="space-y-4">
+          <div className="text-center">
+            <h3 className="text-white text-lg font-semibold mb-2">
+              {mode === 'signin' ? 'Sign In' : 'Create Account'}
+            </h3>
+          </div>
         
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <div className="space-y-2">
@@ -138,6 +173,22 @@ export function AuthModal({ isOpen, onClose, defaultMode = 'signin' }: AuthModal
             </button>
           </div>
         </form>
+
+          <div className="text-center">
+            <button
+              type="button"
+              onClick={() => {
+                setShowSignUpOption(false);
+                setMode('signin');
+                form.reset();
+              }}
+              className="text-gray-400 hover:text-gray-300 text-sm"
+            >
+              ← Back to options
+            </button>
+          </div>
+        </div>
+        )}
       </DialogContent>
     </Dialog>
   );

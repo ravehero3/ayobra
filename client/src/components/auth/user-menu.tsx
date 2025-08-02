@@ -88,21 +88,17 @@ export function UserMenu() {
 
   return (
     <>
-      <div className="flex items-center space-x-2">
-        <Button
-          variant="ghost"
-          onClick={openSignIn}
-          className="text-white hover:bg-gray-800"
-        >
-          Sign In
-        </Button>
-        <Button
-          onClick={openSignUp}
-          className="bg-blue-600 hover:bg-blue-700 text-white"
-        >
-          Sign Up
-        </Button>
-      </div>
+      <Button
+        variant="ghost"
+        onClick={openSignIn}
+        className="relative h-8 w-8 rounded-full p-0 hover:bg-gray-800"
+      >
+        <Avatar className="h-8 w-8">
+          <AvatarFallback className="bg-gray-700 text-white">
+            <User className="h-4 w-4" />
+          </AvatarFallback>
+        </Avatar>
+      </Button>
 
       <AuthModal
         isOpen={authModalOpen}
