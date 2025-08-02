@@ -11,6 +11,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useAuth } from '@/hooks/use-auth';
 import { useToast } from '@/hooks/use-toast';
+import { authService } from '@/lib/auth';
 import { Loader2, CheckCircle } from 'lucide-react';
 
 const resetPasswordSchema = z.object({
