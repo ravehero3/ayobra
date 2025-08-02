@@ -95,11 +95,11 @@ export default function ResetComplete() {
         setIsComplete(true);
         toast({
           title: "Success",
-          description: "Password updated successfully!",
+          description: "Password updated successfully! Redirecting to your profile...",
         });
-        // Redirect to home after 2 seconds
+        // Redirect to profile after 2 seconds
         setTimeout(() => {
-          navigate('/');
+          navigate('/profile');
         }, 2000);
       }
     } catch (error) {
@@ -148,7 +148,7 @@ export default function ResetComplete() {
             </div>
             <CardTitle className="text-white">Password Reset Complete</CardTitle>
             <CardDescription className="text-gray-400">
-              Your password has been successfully updated. You will be redirected to the home page shortly.
+              Your password has been successfully updated. You will be redirected to your profile page shortly.
             </CardDescription>
           </CardHeader>
         </Card>
