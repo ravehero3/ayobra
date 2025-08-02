@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { FolderOpen, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button"
 import { useLocation } from "wouter";
-import { UserIcon } from "@/components/ui/user-icon";
+import { UserMenu } from "@/components/auth/user-menu";
 
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -60,14 +60,14 @@ export default function Navigation() {
             </button>
           </div>
 
-          {/* User Icon */}
+          {/* User Menu */}
           <div className="hidden md:flex items-center">
-            <UserIcon size={32} />
+            <UserMenu />
           </div>
 
           {/* Mobile Icons */}
           <div className="md:hidden flex items-center space-x-3">
-            <UserIcon size={28} />
+            <UserMenu />
             <button
               className="text-white"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}

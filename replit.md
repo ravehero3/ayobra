@@ -7,7 +7,7 @@ This is a clean marketing landing page for TypeBeatz, designed to showcase the d
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
-Project focus: Clean marketing landing page only - absolutely no video generation functionality.
+Project focus: Clean marketing landing page with Supabase authentication - no video generation functionality.
 
 ## System Architecture
 
@@ -47,10 +47,17 @@ Project focus: Clean marketing landing page only - absolutely no video generatio
 - **Storage**: Abstracted storage interface with in-memory implementation (ready for database)
 - **Development**: Vite integration for serving frontend in development
 
+### Authentication System
+- **Provider**: Supabase Authentication with email/password sign up and sign in
+- **Client Library**: @supabase/supabase-js for authentication operations
+- **State Management**: React Context API with useAuth hook for global auth state
+- **UI Components**: Modal-based authentication forms with proper validation
+- **Error Handling**: Graceful fallback when Supabase credentials are not configured
+
 ### Database Schema
-- **Users Table**: Basic user management with id, username, and password fields
-- **Migrations**: Drizzle migrations in PostgreSQL dialect
-- **Validation**: Zod schemas for type-safe data validation
+- **Authentication**: Managed by Supabase (user management, sessions, email confirmation)
+- **Local Storage**: In-memory storage interface ready for expansion
+- **Validation**: Zod schemas for form validation and type safety
 
 ## Data Flow
 
