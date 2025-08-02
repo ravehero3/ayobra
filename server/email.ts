@@ -1,10 +1,16 @@
 
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Initialize Resend only if API key is available
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 export async function sendWelcomeEmail(to: string, name?: string) {
   try {
+    if (!resend) {
+      console.warn('Resend API key not configured - email sending disabled');
+      return { success: false, error: 'Email service not configured' };
+    }
+
     const { data, error } = await resend.emails.send({
       from: 'TypeBeat Studio <onboarding@resend.dev>',
       to: to,
@@ -36,6 +42,11 @@ export async function sendWelcomeEmail(to: string, name?: string) {
 
 export async function sendContactEmail(from: string, name: string, message: string) {
   try {
+    if (!resend) {
+      console.warn('Resend API key not configured - email sending disabled');
+      return { success: false, error: 'Email service not configured' };
+    }
+
     const { data, error } = await resend.emails.send({
       from: 'TypeBeat Studio <onboarding@resend.dev>',
       to: 'typebeatz@voodoo808.com',
