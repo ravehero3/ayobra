@@ -55,6 +55,9 @@ Follow these steps to set up Supabase authentication for your TypeBeatz landing 
 ## Troubleshooting
 
 - Make sure the secret keys are exactly `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` (case-sensitive)
+- **IMPORTANT**: Don't mix up the values!
+  - `VITE_SUPABASE_URL` should be the URL (starts with `https://`)
+  - `VITE_SUPABASE_ANON_KEY` should be the key (starts with `eyJ`)
 - Ensure there are no extra spaces in the values
 - If you're still seeing the setup message, try refreshing the page after restarting
 - Check the browser console for any error messages
