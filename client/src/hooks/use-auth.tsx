@@ -8,6 +8,7 @@ interface AuthContextType extends AuthState {
   signOut: () => Promise<any>;
   resetPassword: (email: string) => Promise<any>;
   updatePassword: (newPassword: string) => Promise<any>;
+  refreshAuth: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -43,6 +44,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => subscription.unsubscribe();
   }, []);
 
+  const refreshAuth = async () => {
+    if (!authService.isConfigured()) return;
+    const { session } = await authService.getSession();
+    setSession(session);
+    setUser(session?.user ?? null);
+  };
+
   const value = {
     user,
     session,
@@ -60,6 +68,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     updatePassword: async (newPassword: string) => {
       return authService.updatePassword(newPassword);
     },
+    refreshAuth,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

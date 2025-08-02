@@ -75,6 +75,23 @@ export const authService = {
     return { session, error };
   },
 
+  // Set session (for email verification)
+  async setSession({ access_token, refresh_token }: { access_token: string; refresh_token: string }) {
+    if (!supabase) {
+      return { 
+        data: null, 
+        error: { message: 'Supabase is not configured' }
+      };
+    }
+
+    const { data, error } = await supabase.auth.setSession({
+      access_token,
+      refresh_token,
+    });
+
+    return { data, error };
+  },
+
   // Get current user
   async getUser() {
     if (!supabase) {

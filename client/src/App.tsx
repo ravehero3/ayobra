@@ -7,6 +7,7 @@ import { AuthProvider } from "@/hooks/use-auth";
 import Home from "@/pages/home";
 import Auth from "@/pages/auth";
 import ResetComplete from "@/pages/reset-complete";
+import { VerifyEmailPage } from "@/pages/verify-email";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -15,6 +16,7 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/auth" component={Auth} />
       <Route path="/auth/reset-complete" component={ResetComplete} />
+      <Route path="/verify-email" component={VerifyEmailPage} />
       <Route component={NotFound} />
     </Switch>
   );
