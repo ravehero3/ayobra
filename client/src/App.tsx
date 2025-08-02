@@ -8,6 +8,7 @@ import Home from "@/pages/home";
 import Auth from "@/pages/auth";
 import ResetComplete from "@/pages/reset-complete";
 import { VerifyEmailPage } from "@/pages/verify-email";
+import UserProfile from "@/pages/user-profile";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -17,6 +18,7 @@ function Router() {
       <Route path="/auth" component={Auth} />
       <Route path="/auth/reset-complete" component={ResetComplete} />
       <Route path="/verify-email" component={VerifyEmailPage} />
+      <Route path="/profile" component={UserProfile} />
       <Route component={NotFound} />
     </Switch>
   );

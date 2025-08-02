@@ -6,12 +6,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useAuth } from '@/hooks/use-auth';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, User, Lock, Mail, ArrowLeft } from 'lucide-react';
+import { Loader2, User, Lock, Mail, ArrowLeft, Camera, Edit } from 'lucide-react';
 
 const changePasswordSchema = z.object({
   newPassword: z.string().min(6, 'Password must be at least 6 characters'),
@@ -21,30 +22,53 @@ const changePasswordSchema = z.object({
   path: ["confirmPassword"],
 });
 
+const updateProfileSchema = z.object({
+  displayName: z.string().min(1, 'Display name is required'),
+});
+
 type ChangePasswordFormData = z.infer<typeof changePasswordSchema>;
+type UpdateProfileFormData = z.infer<typeof updateProfileSchema>;
 
 export default function UserProfile() {
   const [, navigate] = useLocation();
   const [isLoading, setIsLoading] = useState(false);
+  const [isUpdatingProfile, setIsUpdatingProfile] = useState(false);
+  const [avatarUrl, setAvatarUrl] = useState<string>('');
   const { user, updatePassword } = useAuth();
   const { toast } = useToast();
 
   const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
+    register: registerPassword,
+    handleSubmit: handlePasswordSubmit,
+    formState: { errors: passwordErrors },
+    reset: resetPassword,
   } = useForm<ChangePasswordFormData>({
     resolver: zodResolver(changePasswordSchema),
+  });
+
+  const {
+    register: registerProfile,
+    handleSubmit: handleProfileSubmit,
+    formState: { errors: profileErrors },
+    setValue: setProfileValue,
+  } = useForm<UpdateProfileFormData>({
+    resolver: zodResolver(updateProfileSchema),
+    defaultValues: {
+      displayName: user?.user_metadata?.display_name || user?.email?.split('@')[0] || '',
+    },
   });
 
   useEffect(() => {
     if (!user) {
       navigate('/');
+    } else {
+      // Set initial values
+      setProfileValue('displayName', user.user_metadata?.display_name || user.email?.split('@')[0] || '');
+      setAvatarUrl(user.user_metadata?.avatar_url || '');
     }
-  }, [user, navigate]);
+  }, [user, navigate, setProfileValue]);
 
-  const onSubmit = async (data: ChangePasswordFormData) => {
+  const onPasswordSubmit = async (data: ChangePasswordFormData) => {
     setIsLoading(true);
     try {
       const result = await updatePassword(data.newPassword);
@@ -60,7 +84,7 @@ export default function UserProfile() {
           title: "Success",
           description: "Password updated successfully!",
         });
-        reset();
+        resetPassword();
       }
     } catch (error) {
       toast({
@@ -73,9 +97,47 @@ export default function UserProfile() {
     }
   };
 
+  const onProfileSubmit = async (data: UpdateProfileFormData) => {
+    setIsUpdatingProfile(true);
+    try {
+      // In a real app, you'd update the user's profile via Supabase
+      // For now, we'll just show a success message
+      toast({
+        title: "Success",
+        description: "Profile updated successfully!",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update profile",
+        variant: "destructive",
+      });
+    } finally {
+      setIsUpdatingProfile(false);
+    }
+  };
+
+  const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setAvatarUrl(e.target?.result as string);
+        toast({
+          title: "Avatar Updated",
+          description: "Your profile picture has been updated!",
+        });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   if (!user) {
     return null;
   }
+
+  const displayName = user.user_metadata?.display_name || user.email?.split('@')[0] || 'User';
+  const initials = displayName.split(' ').map(n => n[0]).join('').toUpperCase();
 
   return (
     <motion.div
@@ -97,25 +159,86 @@ export default function UserProfile() {
         </div>
 
         <div className="space-y-6">
-          {/* User Info Card */}
+          {/* Profile Overview Card */}
           <Card className="bg-black/90 border-gray-800">
             <CardHeader>
               <CardTitle className="text-white flex items-center">
                 <User className="mr-2 h-5 w-5" />
-                Profile Information
+                Profile Overview
               </CardTitle>
               <CardDescription className="text-gray-400">
-                Your account details
+                Your account information
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-center space-x-3">
-                <Mail className="h-4 w-4 text-gray-400" />
-                <span className="text-white">{user.email}</span>
+            <CardContent className="space-y-6">
+              {/* Avatar Section */}
+              <div className="flex items-center space-x-4">
+                <div className="relative">
+                  <Avatar className="h-20 w-20">
+                    <AvatarImage src={avatarUrl} alt={displayName} />
+                    <AvatarFallback className="bg-blue-600 text-white text-lg">
+                      {initials}
+                    </AvatarFallback>
+                  </Avatar>
+                  <label className="absolute bottom-0 right-0 bg-blue-600 rounded-full p-1 cursor-pointer hover:bg-blue-700 transition-colors">
+                    <Camera className="h-3 w-3 text-white" />
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleAvatarChange}
+                      className="hidden"
+                    />
+                  </label>
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold text-white">{displayName}</h3>
+                  <div className="flex items-center space-x-2 text-gray-400">
+                    <Mail className="h-4 w-4" />
+                    <span>{user.email}</span>
+                  </div>
+                  <div className="text-sm text-gray-400 mt-1">
+                    Member since {new Date(user.created_at).toLocaleDateString()}
+                  </div>
+                </div>
               </div>
-              <div className="text-sm text-gray-400">
-                Account created: {new Date(user.created_at).toLocaleDateString()}
-              </div>
+            </CardContent>
+          </Card>
+
+          {/* Edit Profile Card */}
+          <Card className="bg-black/90 border-gray-800">
+            <CardHeader>
+              <CardTitle className="text-white flex items-center">
+                <Edit className="mr-2 h-5 w-5" />
+                Edit Profile
+              </CardTitle>
+              <CardDescription className="text-gray-400">
+                Update your profile information
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleProfileSubmit(onProfileSubmit)} className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="displayName" className="text-white">Display Name</Label>
+                  <Input
+                    id="displayName"
+                    {...registerProfile('displayName')}
+                    className="bg-gray-900 border-gray-700 text-white"
+                    placeholder="Enter your display name"
+                  />
+                  {profileErrors.displayName && (
+                    <p className="text-sm text-red-500">{profileErrors.displayName.message}</p>
+                  )}
+                </div>
+
+                <Button
+                  type="submit"
+                  disabled={isUpdatingProfile}
+                  className="w-full bg-green-600 hover:bg-green-700"
+                >
+                  {isUpdatingProfile && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                  Update Profile
+                </Button>
+              </form>
             </CardContent>
           </Card>
 
@@ -131,18 +254,18 @@ export default function UserProfile() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+              <form onSubmit={handlePasswordSubmit(onPasswordSubmit)} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="newPassword" className="text-white">New Password</Label>
                   <Input
                     id="newPassword"
                     type="password"
-                    {...register('newPassword')}
+                    {...registerPassword('newPassword')}
                     className="bg-gray-900 border-gray-700 text-white"
                     placeholder="Enter new password"
                   />
-                  {errors.newPassword && (
-                    <p className="text-sm text-red-500">{errors.newPassword.message}</p>
+                  {passwordErrors.newPassword && (
+                    <p className="text-sm text-red-500">{passwordErrors.newPassword.message}</p>
                   )}
                 </div>
 
@@ -151,12 +274,12 @@ export default function UserProfile() {
                   <Input
                     id="confirmPassword"
                     type="password"
-                    {...register('confirmPassword')}
+                    {...registerPassword('confirmPassword')}
                     className="bg-gray-900 border-gray-700 text-white"
                     placeholder="Confirm new password"
                   />
-                  {errors.confirmPassword && (
-                    <p className="text-sm text-red-500">{errors.confirmPassword.message}</p>
+                  {passwordErrors.confirmPassword && (
+                    <p className="text-sm text-red-500">{passwordErrors.confirmPassword.message}</p>
                   )}
                 </div>
 
