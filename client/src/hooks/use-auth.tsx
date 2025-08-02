@@ -3,9 +3,11 @@ import { User, Session } from '@supabase/supabase-js';
 import { authService, AuthState } from '@/lib/auth';
 
 interface AuthContextType extends AuthState {
-  signUp: (email: string, password: string) => Promise<{ data: any; error: any }>;
-  signIn: (email: string, password: string) => Promise<{ data: any; error: any }>;
-  signOut: () => Promise<{ error: any }>;
+  signUp: (email: string, password: string) => Promise<any>;
+  signIn: (email: string, password: string) => Promise<any>;
+  signOut: () => Promise<any>;
+  resetPassword: (email: string) => Promise<any>;
+  updatePassword: (newPassword: string) => Promise<any>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -52,6 +54,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return authService.signIn({ email, password });
     },
     signOut: authService.signOut,
+    resetPassword: async (email: string) => {
+      return authService.resetPassword(email);
+    },
+    updatePassword: async (newPassword: string) => {
+      return authService.updatePassword(newPassword);
+    },
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

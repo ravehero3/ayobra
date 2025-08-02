@@ -85,6 +85,38 @@ export const authService = {
     return { user, error };
   },
 
+  // Reset password - send reset email
+  async resetPassword(email: string) {
+    if (!supabase) {
+      return { 
+        data: null, 
+        error: { message: 'Supabase is not configured. Please add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY environment variables.' }
+      };
+    }
+
+    const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/auth/reset-complete`
+    });
+
+    return { data, error };
+  },
+
+  // Update password (called after user clicks reset link)
+  async updatePassword(newPassword: string) {
+    if (!supabase) {
+      return { 
+        data: null, 
+        error: { message: 'Supabase is not configured' }
+      };
+    }
+
+    const { data, error } = await supabase.auth.updateUser({
+      password: newPassword
+    });
+
+    return { data, error };
+  },
+
   // Listen to auth state changes
   onAuthStateChange(callback: (event: string, session: Session | null) => void) {
     if (!supabase) {

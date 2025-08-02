@@ -174,6 +174,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Password reset completion route
+  app.get('/auth/reset-complete', async (req, res) => {
+    // Serve the React app which will handle the password reset completion
+    res.redirect('/auth/reset-complete');
+  });
+
   // Serve uploaded files
   app.use('/uploads', express.static('uploads'));
 

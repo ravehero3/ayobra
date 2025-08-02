@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -15,7 +15,12 @@ const authSchema = z.object({
   password: z.string().min(6, 'Password must be at least 6 characters'),
 });
 
+const resetSchema = z.object({
+  email: z.string().email('Please enter a valid email address'),
+});
+
 type AuthFormData = z.infer<typeof authSchema>;
+type ResetFormData = z.infer<typeof resetSchema>;
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -23,10 +28,18 @@ interface AuthModalProps {
   defaultMode?: 'signin' | 'signup';
 }
 
-export function AuthModal({ isOpen, onClose, defaultMode = 'signin' }: AuthModalProps) {
-  const [mode, setMode] = useState<'signin' | 'signup'>(defaultMode);
+export function AuthModal({ 
+  isOpen, 
+  onClose, 
+  defaultMode = 'signin' 
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  defaultMode?: 'signin' | 'signup';
+}) {
+  const [mode, setMode] = useState<'signin' | 'signup' | 'reset'>(defaultMode);
   const [loading, setLoading] = useState(false);
-  const { signIn, signUp } = useAuth();
+  const { signIn, signUp, resetPassword } = useAuth();
   const { toast } = useToast();
   const [showSignUpOption, setShowSignUpOption] = useState(false);
 
@@ -35,6 +48,31 @@ export function AuthModal({ isOpen, onClose, defaultMode = 'signin' }: AuthModal
     defaultValues: {
       email: '',
       password: '',
+    },
+  });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<AuthFormData>({
+    resolver: zodResolver(authSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
+
+  const {
+    register: registerReset,
+    handleSubmit: handleSubmitReset,
+    formState: { errors: resetErrors },
+    reset: resetResetForm,
+  } = useForm<ResetFormData>({
+    resolver: zodResolver(resetSchema),
+    defaultValues: {
+      email: '',
     },
   });
 
@@ -62,7 +100,7 @@ export function AuthModal({ isOpen, onClose, defaultMode = 'signin' }: AuthModal
             : 'Please check your email to confirm your account.',
         });
         onClose();
-        form.reset();
+        reset();
       }
     } catch (error) {
       toast({
@@ -75,10 +113,49 @@ export function AuthModal({ isOpen, onClose, defaultMode = 'signin' }: AuthModal
     }
   };
 
+  const onResetPassword = async (data: ResetFormData) => {
+    setLoading(true);
+    try {
+      const result = await resetPassword(data.email);
+
+      if (result.error) {
+        toast({
+          title: "Error",
+          description: result.error.message,
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Reset email sent",
+          description: "Check your email for password reset instructions",
+        });
+        onClose();
+        resetResetForm();
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
   const toggleMode = () => {
     setMode(mode === 'signin' ? 'signup' : 'signin');
     form.reset();
   };
+
+  useEffect(() => {
+    if (isOpen) {
+      setMode(defaultMode);
+      reset();
+      resetResetForm();
+    }
+  }, [isOpen, defaultMode, reset, resetResetForm]);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -94,7 +171,7 @@ export function AuthModal({ isOpen, onClose, defaultMode = 'signin' }: AuthModal
             <p className="text-gray-400 text-center">
               Choose how you'd like to continue
             </p>
-            
+
             <div className="space-y-3">
               <Button
                 onClick={() => setShowSignUpOption(true)}
@@ -102,7 +179,7 @@ export function AuthModal({ isOpen, onClose, defaultMode = 'signin' }: AuthModal
               >
                 Sign In to Your Account
               </Button>
-              
+
               <Button
                 onClick={() => {
                   setMode('signup');
@@ -122,7 +199,43 @@ export function AuthModal({ isOpen, onClose, defaultMode = 'signin' }: AuthModal
               {mode === 'signin' ? 'Sign In' : 'Create Account'}
             </h3>
           </div>
-        
+
+        {mode === 'reset' ? (
+          <form onSubmit={handleSubmitReset(onResetPassword)} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="reset-email" className="text-white">Email</Label>
+              <Input
+                id="reset-email"
+                type="email"
+                placeholder="Enter your email"
+                className="bg-gray-900 border-gray-700 text-white placeholder:text-gray-400"
+                {...registerReset('email')}
+              />
+              {resetErrors.email && (
+                <p className="text-red-400 text-sm">{resetErrors.email.message}</p>
+              )}
+            </div>
+
+            <Button
+              type="submit"
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+              disabled={loading}
+            >
+              {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              Send Reset Email
+            </Button>
+
+            <div className="text-center">
+              <button
+                type="button"
+                onClick={() => setMode('signin')}
+                className="text-blue-400 hover:text-blue-300 text-sm underline"
+              >
+                Remember your password? Sign in
+              </button>
+            </div>
+          </form>
+        ) : (
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="email" className="text-white">Email</Label>
@@ -152,6 +265,18 @@ export function AuthModal({ isOpen, onClose, defaultMode = 'signin' }: AuthModal
             )}
           </div>
 
+          {mode === 'signin' && (
+            <div className="text-center">
+              <button
+                type="button"
+                onClick={() => setMode('reset')}
+                className="text-blue-400 hover:text-blue-300 text-sm underline"
+              >
+                Forgot password?
+              </button>
+            </div>
+          )}
+
           <Button
             type="submit"
             className="w-full bg-blue-600 hover:bg-blue-700 text-white"
@@ -160,19 +285,8 @@ export function AuthModal({ isOpen, onClose, defaultMode = 'signin' }: AuthModal
             {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             {mode === 'signin' ? 'Sign In' : 'Create Account'}
           </Button>
-
-          <div className="text-center">
-            <button
-              type="button"
-              onClick={toggleMode}
-              className="text-blue-400 hover:text-blue-300 text-sm underline"
-            >
-              {mode === 'signin' 
-                ? "Don't have an account? Sign up" 
-                : "Already have an account? Sign in"}
-            </button>
-          </div>
         </form>
+        )}
 
           <div className="text-center">
             <button
