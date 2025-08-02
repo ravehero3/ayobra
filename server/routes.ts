@@ -156,6 +156,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Auth callback route for Supabase
+  app.get('/auth/callback', async (req, res) => {
+    const { code, error } = req.query;
+    
+    if (error) {
+      console.error('Auth error:', error);
+      return res.redirect('/?error=auth_failed');
+    }
+    
+    if (code) {
+      // In a full implementation, you'd exchange the code for tokens here
+      // For now, just redirect to the main app
+      res.redirect('/');
+    } else {
+      res.redirect('/?error=no_code');
+    }
+  });
+
   // Serve uploaded files
   app.use('/uploads', express.static('uploads'));
 
