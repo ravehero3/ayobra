@@ -5,7 +5,7 @@ import { Label } from '@/components/ui/label';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { authService } from '@/lib/auth';
+import { useAuth } from '@/hooks/use-auth';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, ArrowLeft } from 'lucide-react';
 
@@ -23,6 +23,7 @@ export function ForgotPasswordForm({ onBack }: ForgotPasswordFormProps) {
   const [loading, setLoading] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
   const { toast } = useToast();
+  const { resetPassword } = useAuth();
 
   const form = useForm<ForgotPasswordFormData>({
     resolver: zodResolver(forgotPasswordSchema),
@@ -34,13 +35,21 @@ export function ForgotPasswordForm({ onBack }: ForgotPasswordFormProps) {
   const onSubmit = async (data: ForgotPasswordFormData) => {
     setLoading(true);
     try {
-      // For now, just show a success message since we can't implement actual password reset
-      // without Supabase being fully configured
-      setEmailSent(true);
-      toast({
-        title: 'Reset email sent!',
-        description: 'If an account with that email exists, we sent you a password reset link.',
-      });
+      const result = await resetPassword(data.email);
+
+      if (result.error) {
+        toast({
+          title: 'Error',
+          description: result.error.message,
+          variant: 'destructive',
+        });
+      } else {
+        setEmailSent(true);
+        toast({
+          title: 'Reset email sent!',
+          description: 'If an account with that email exists, we sent you a password reset link.',
+        });
+      }
     } catch (error) {
       toast({
         title: 'Error',
