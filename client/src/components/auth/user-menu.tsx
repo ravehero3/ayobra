@@ -28,19 +28,13 @@ export function UserMenu() {
   };
 
   const openSignIn = () => {
-    if (!isSupabaseConfigured) {
-      setSetupModalOpen(true);
-      return;
-    }
+    // Always show auth modal - let users try to authenticate
     setAuthMode('signin');
     setAuthModalOpen(true);
   };
 
   const openSignUp = () => {
-    if (!isSupabaseConfigured) {
-      setSetupModalOpen(true);
-      return;
-    }
+    // Always show auth modal - let users try to authenticate
     setAuthMode('signup');
     setAuthModalOpen(true);
   };
