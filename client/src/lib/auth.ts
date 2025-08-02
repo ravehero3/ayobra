@@ -111,8 +111,11 @@ export const authService = {
       };
     }
 
+    // Get the current domain dynamically
+    const currentDomain = window.location.origin;
+    
     const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: 'https://typebeatz.voodoo808.com/auth/reset-complete'
+      redirectTo: `${currentDomain}/auth/reset-complete`
     });
 
     return { data, error };
