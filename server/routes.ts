@@ -6,6 +6,7 @@ import { insertProjectSchema, insertAudioPairSchema } from "@shared/schema";
 import multer from "multer";
 import path from "path";
 import { promises as fs } from "fs";
+import { sendWelcomeEmail, sendContactEmail } from "./email";
 
 // Configure multer for file uploads
 const upload = multer({
@@ -111,6 +112,47 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({ success: true });
     } catch (error) {
       res.status(500).json({ message: "Failed to delete audio pair" });
+    }
+  });
+
+  // Email endpoints
+  app.post("/api/contact", async (req, res) => {
+    try {
+      const { name, email, message } = req.body;
+      
+      if (!name || !email || !message) {
+        return res.status(400).json({ message: "All fields are required" });
+      }
+
+      const result = await sendContactEmail(email, name, message);
+      
+      if (result.success) {
+        res.json({ message: "Message sent successfully" });
+      } else {
+        res.status(500).json({ message: "Failed to send message" });
+      }
+    } catch (error) {
+      res.status(500).json({ message: "Failed to send contact message" });
+    }
+  });
+
+  app.post("/api/newsletter", async (req, res) => {
+    try {
+      const { email, name } = req.body;
+      
+      if (!email) {
+        return res.status(400).json({ message: "Email is required" });
+      }
+
+      const result = await sendWelcomeEmail(email, name);
+      
+      if (result.success) {
+        res.json({ message: "Successfully subscribed to newsletter" });
+      } else {
+        res.status(500).json({ message: "Failed to subscribe" });
+      }
+    } catch (error) {
+      res.status(500).json({ message: "Failed to subscribe to newsletter" });
     }
   });
 
