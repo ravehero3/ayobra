@@ -23,50 +23,58 @@ export const authService = {
   // Check if Supabase is configured
   isConfigured: () => Boolean(supabase),
 
-  // Backend API auth methods
+  // Backend API auth methods (placeholder - not implemented yet)
   async backendSignUp({ email, password, displayName }: SignUpData) {
-    const result = await apiClient.register({ email, password, displayName });
-    return result;
+    // TODO: Implement backend registration
+    console.log('Backend signup not implemented yet');
+    return { data: null, error: null };
   },
 
   async backendSignIn({ email, password }: SignInData) {
-    const result = await apiClient.login({ email, password });
-    return result;
+    // TODO: Implement backend login
+    console.log('Backend signin not implemented yet');
+    return { data: null, error: null };
   },
 
   async backendSignOut() {
-    const result = await apiClient.logout();
-    return result;
+    // TODO: Implement backend logout
+    console.log('Backend signout not implemented yet');
+    return { data: null, error: null };
   },
 
   async backendGetProfile() {
-    const result = await apiClient.getProfile();
-    return result;
+    // TODO: Implement get profile
+    console.log('Backend get profile not implemented yet');
+    return { data: null, error: null };
   },
 
   async backendUpdateProfile(updates: { displayName?: string; avatar?: string }) {
-    const result = await apiClient.updateProfile(updates);
-    return result;
+    // TODO: Implement update profile
+    console.log('Backend update profile not implemented yet');
+    return { data: null, error: null };
   },
 
-  // Video API methods
+  // Video API methods (placeholder - not implemented yet)
   async getUserVideos() {
-    const result = await apiClient.getUserVideos();
-    return result;
+    // TODO: Implement get user videos
+    console.log('Get user videos not implemented yet');
+    return { data: [], error: null };
   },
 
   async createVideoJob(jobData: { audioUrl: string; imageUrl?: string; settings?: any }) {
-    const result = await apiClient.createVideoJob(jobData);
-    return result;
+    // TODO: Implement create video job
+    console.log('Create video job not implemented yet');
+    return { data: null, error: null };
   },
 
   async getVideoStatus(videoId: string) {
-    const result = await apiClient.getVideoStatus(videoId);
-    return result;
+    // TODO: Implement get video status
+    console.log('Get video status not implemented yet');
+    return { data: null, error: null };
   },
 
-  // Check if user is authenticated with backend
-  isBackendAuthenticated: () => apiClient.isAuthenticated(),
+  // Check if user is authenticated with backend (placeholder)
+  isBackendAuthenticated: () => false,
 
   // Sign up with email and password
   async signUp({ email, password }: SignUpData) {
@@ -97,6 +105,25 @@ export const authService = {
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
+    });
+
+    return { data, error };
+  },
+
+  // Sign in with Google OAuth
+  async signInWithGoogle() {
+    if (!supabase) {
+      return { 
+        data: null, 
+        error: { message: 'Supabase is not configured. Please add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY environment variables.' }
+      };
+    }
+
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}`,
+      }
     });
 
     return { data, error };

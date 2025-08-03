@@ -10,6 +10,7 @@ import { useAuth } from '@/hooks/use-auth';
 import { useToast } from '@/hooks/use-toast';
 import { ForgotPasswordForm } from './forgot-password-form';
 import { Loader2 } from 'lucide-react';
+import { FaGoogle } from 'react-icons/fa';
 
 const authSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -31,7 +32,8 @@ export function AuthModal({
 }: AuthModalProps) {
   const [mode, setMode] = useState<'signin' | 'signup' | 'forgot' | 'menu'>('menu');
   const [loading, setLoading] = useState(false);
-  const { signIn, signUp } = useAuth();
+  const [googleLoading, setGoogleLoading] = useState(false);
+  const { signIn, signUp, signInWithGoogle } = useAuth();
   const { toast } = useToast();
 
   const form = useForm<AuthFormData>({
@@ -77,6 +79,35 @@ export function AuthModal({
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    setGoogleLoading(true);
+    try {
+      const result = await signInWithGoogle();
+      
+      if (result?.error) {
+        toast({
+          title: 'Authentication Error',
+          description: result.error.message,
+          variant: 'destructive',
+        });
+      } else {
+        toast({
+          title: 'Success!',
+          description: 'Redirecting to Google...',
+        });
+        onClose();
+      }
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Something went wrong. Please try again.',
+        variant: 'destructive',
+      });
+    } finally {
+      setGoogleLoading(false);
     }
   };
 
@@ -200,33 +231,61 @@ export function AuthModal({
         <div className="text-center">
           <h3 className="text-white text-lg font-semibold mb-2">Welcome to TypeBeatz</h3>
           <p className="text-gray-400 text-sm">
-            Choose how you'd like to continue
+            Sign in to access your account
           </p>
         </div>
         
-        <div className="space-y-3">
+        <div className="space-y-4">
+          {/* Google OAuth - Primary Option */}
           <Button
-            onClick={() => setMode('signin')}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white h-12"
+            onClick={handleGoogleSignIn}
+            disabled={googleLoading}
+            className="w-full bg-white hover:bg-gray-100 text-gray-900 h-12 font-medium flex items-center justify-center gap-3"
           >
-            Sign In to Your Account
-          </Button>
-          
-          <Button
-            onClick={() => setMode('signup')}
-            variant="outline"
-            className="w-full border-gray-600 text-white hover:bg-gray-800 h-12"
-          >
-            Create New Account
+            {googleLoading ? (
+              <Loader2 className="h-5 w-5 animate-spin" />
+            ) : (
+              <FaGoogle className="h-5 w-5 text-red-500" />
+            )}
+            {googleLoading ? 'Signing in...' : 'Continue with Google'}
           </Button>
 
-          <Button
-            onClick={() => setMode('forgot')}
-            variant="ghost"
-            className="w-full text-gray-400 hover:text-gray-300 hover:bg-gray-800 h-10"
-          >
-            Forgot Password?
-          </Button>
+          {/* Divider */}
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t border-gray-600" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-gray-800 px-2 text-gray-400">Or</span>
+            </div>
+          </div>
+          
+          {/* Email/Password Options */}
+          <div className="space-y-2">
+            <Button
+              onClick={() => setMode('signin')}
+              variant="outline"
+              className="w-full border-gray-600 text-white hover:bg-gray-700 h-11"
+            >
+              Sign In with Email
+            </Button>
+            
+            <Button
+              onClick={() => setMode('signup')}
+              variant="outline"
+              className="w-full border-gray-600 text-white hover:bg-gray-700 h-11"
+            >
+              Create New Account
+            </Button>
+
+            <Button
+              onClick={() => setMode('forgot')}
+              variant="ghost"
+              className="w-full text-gray-400 hover:text-gray-300 hover:bg-gray-800 h-9 text-sm"
+            >
+              Forgot Password?
+            </Button>
+          </div>
         </div>
       </div>
     );

@@ -5,6 +5,7 @@ import { authService, AuthState } from '@/lib/auth';
 interface AuthContextType extends AuthState {
   signUp: (email: string, password: string) => Promise<any>;
   signIn: (email: string, password: string) => Promise<any>;
+  signInWithGoogle: () => Promise<any>;
   signOut: () => Promise<any>;
   resetPassword: (email: string) => Promise<any>;
   updatePassword: (newPassword: string) => Promise<any>;
@@ -61,9 +62,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     signIn: async (email: string, password: string) => {
       return authService.signIn({ email, password });
     },
+    signInWithGoogle: async () => {
+      return authService.signInWithGoogle();
+    },
     signOut: authService.signOut,
     resetPassword: async (email: string) => {
-      return authService.resetPassword(email);
+      return authService.resetPasswordForEmail(email);
     },
     updatePassword: async (newPassword: string) => {
       return authService.updatePassword(newPassword);
