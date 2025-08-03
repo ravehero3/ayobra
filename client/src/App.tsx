@@ -34,6 +34,7 @@ function App() {
   return (
     <ClerkProvider 
       publishableKey={PUBLISHABLE_KEY}
+      afterSignOutUrl="/"
       appearance={{
         baseTheme: "dark",
         elements: {
