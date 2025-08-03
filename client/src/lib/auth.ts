@@ -150,22 +150,34 @@ export const authService = {
   },
 
   // Reset password - send reset email
-  async resetPassword(email: string) {
+  async resetPasswordForEmail(email: string) {
     if (!supabase) {
-      return { 
-        data: null, 
-        error: { message: 'Supabase is not configured. Please add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY environment variables.' }
+      return {
+        data: null,
+        error: { message: 'Supabase is not configured. Please check your environment variables.' }
       };
     }
 
-    // Get the current domain dynamically
-    const currentDomain = window.location.origin;
-    
-    const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${currentDomain}/auth/reset-complete`
-    });
+    try {
+      // Use the current domain or fallback to your production domain
+      const currentDomain = typeof window !== 'undefined' ? window.location.origin : 'https://typebeatz.voodoo808.com';
 
-    return { data, error };
+      const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${currentDomain}/auth/reset-complete`
+      });
+
+      if (error) {
+        console.error('Password reset error:', error);
+      }
+
+      return { data, error };
+    } catch (err) {
+      console.error('Password reset service error:', err);
+      return {
+        data: null,
+        error: { message: 'Failed to send recovery email. Please try again.' }
+      };
+    }
   },
 
   // Update password (called after user clicks reset link)
