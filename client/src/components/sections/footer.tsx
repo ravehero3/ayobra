@@ -53,7 +53,7 @@ export default function Footer() {
               <div className="w-8 h-8 bg-framer-gradient rounded-lg flex items-center justify-center">
                 <FolderOpen className="w-5 h-5 text-white" />
               </div>
-              <span className="text-xl font-bold">Voodoo808</span>
+              <span className="text-xl font-bold">Type Beatz</span>
             </div>
             <p className="text-framer-muted mb-4">
               The ultimate desktop app for creating professional beat videos.
