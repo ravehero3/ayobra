@@ -82,17 +82,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/auth/login", async (req, res) => {
     try {
       const { email, password } = loginSchema.parse(req.body);
-      
+
       const user = await storage.getUserByEmail(email);
       if (!user || !await bcrypt.compare(password, user.passwordHash)) {
         return res.status(401).json({ message: "Invalid credentials" });
       }
 
       const { accessToken, refreshToken } = generateTokens(user.id);
-      
+
       // Store refresh token
       await storage.storeRefreshToken(user.id, refreshToken);
-      
+
       res.json({
         user: {
           id: user.id,
@@ -112,7 +112,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/auth/register", async (req, res) => {
     try {
       const { email, password, displayName } = registerSchema.parse(req.body);
-      
+
       // Check if user already exists
       const existingUser = await storage.getUserByEmail(email);
       if (existingUser) {
@@ -121,7 +121,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Hash password
       const passwordHash = await bcrypt.hash(password, 10);
-      
+
       // Create user
       const user = await storage.createUser({
         email,
@@ -130,10 +130,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
 
       const { accessToken, refreshToken } = generateTokens(user.id);
-      
+
       // Store refresh token
       await storage.storeRefreshToken(user.id, refreshToken);
-      
+
       res.status(201).json({
         user: {
           id: user.id,
@@ -153,23 +153,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/auth/refresh", async (req, res) => {
     try {
       const { refreshToken } = req.body;
-      
+
       if (!refreshToken) {
         return res.status(401).json({ message: "Refresh token required" });
       }
 
       const decoded = jwt.verify(refreshToken, JWT_SECRET) as any;
       const storedToken = await storage.getRefreshToken(decoded.userId);
-      
+
       if (!storedToken || storedToken !== refreshToken) {
         return res.status(401).json({ message: "Invalid refresh token" });
       }
 
       const { accessToken, refreshToken: newRefreshToken } = generateTokens(decoded.userId);
-      
+
       // Update refresh token
       await storage.storeRefreshToken(decoded.userId, newRefreshToken);
-      
+
       res.json({
         accessToken,
         refreshToken: newRefreshToken,
@@ -207,7 +207,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const updates = updateProfileSchema.parse(req.body);
       const updatedUser = await storage.updateUser(req.user.id, updates);
-      
+
       res.json({
         id: updatedUser.id,
         email: updatedUser.email,
@@ -240,7 +240,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         settings: jobData.settings || { quality: '1080p' },
         status: 'pending',
       });
-      
+
       res.status(201).json(video);
     } catch (error) {
       res.status(400).json({ message: "Invalid video job data" });
@@ -250,11 +250,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/videos/:id/status", authenticateToken, async (req: any, res) => {
     try {
       const video = await storage.getVideoJob(req.params.id);
-      
+
       if (!video || video.userId !== req.user.id) {
         return res.status(404).json({ message: "Video not found" });
       }
-      
+
       res.json({
         id: video.id,
         status: video.status,
@@ -371,13 +371,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/contact", async (req, res) => {
     try {
       const { name, email, message } = req.body;
-      
+
       if (!name || !email || !message) {
         return res.status(400).json({ message: "All fields are required" });
       }
 
       const result = await sendContactEmail(email, name, message);
-      
+
       if (result.success) {
         res.json({ message: "Message sent successfully" });
       } else {
@@ -391,13 +391,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/newsletter", async (req, res) => {
     try {
       const { email, name } = req.body;
-      
+
       if (!email) {
         return res.status(400).json({ message: "Email is required" });
       }
 
       const result = await sendWelcomeEmail(email, name);
-      
+
       if (result.success) {
         res.json({ message: "Successfully subscribed to newsletter" });
       } else {
@@ -411,12 +411,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Auth callback route for Supabase
   app.get('/auth/callback', async (req, res) => {
     const { code, error } = req.query;
-    
+
     if (error) {
       console.error('Auth error:', error);
       return res.redirect('/?error=auth_failed');
     }
-    
+
     if (code) {
       // In a full implementation, you'd exchange the code for tokens here
       // For now, just redirect to the main app
@@ -435,6 +435,392 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Serve uploaded files
   app.use('/uploads', express.static('uploads'));
+
+  // API Routes for desktop app integration
+  app.post('/api/auth/login', async (req, res) => {
+    try {
+      const { email, password } = req.body;
+
+      if (!email || !password) {
+        return res.status(400).json({ error: 'Email and password required' });
+      }
+
+      // For now, return mock response - integrate with your auth system
+      const token = jwt.sign(
+        { email, userId: 'mock-user-id' }, 
+        process.env.JWT_SECRET || 'fallback-secret',
+        { expiresIn: '1h' }
+      );
+
+      const refreshToken = jwt.sign(
+        { email, userId: 'mock-user-id', type: 'refresh' }, 
+        process.env.JWT_SECRET || 'fallback-secret',
+        { expiresIn: '7d' }
+      );
+
+      res.json({
+        access_token: token,
+        refresh_token: refreshToken,
+        expires_in: 3600,
+        user: {
+          id: 'mock-user-id',
+          email,
+          name: 'User Name'
+        }
+      });
+    } catch (error) {
+      console.error('Login error:', error);
+      res.status(500).json({ error: 'Login failed' });
+    }
+  });
+
+  app.post('/api/auth/refresh', async (req, res) => {
+    try {
+      const { refresh_token } = req.body;
+
+      if (!refresh_token) {
+        return res.status(400).json({ error: 'Refresh token required' });
+      }
+
+      // Verify refresh token
+      const decoded = jwt.verify(refresh_token, process.env.JWT_SECRET || 'fallback-secret') as any;
+
+      if (decoded.type !== 'refresh') {
+        return res.status(401).json({ error: 'Invalid refresh token' });
+      }
+
+      // Generate new access token
+      const newToken = jwt.sign(
+        { email: decoded.email, userId: decoded.userId }, 
+        process.env.JWT_SECRET || 'fallback-secret',
+        { expiresIn: '1h' }
+      );
+
+      res.json({
+        access_token: newToken,
+        expires_in: 3600
+      });
+    } catch (error) {
+      console.error('Token refresh error:', error);
+      res.status(401).json({ error: 'Invalid refresh token' });
+    }
+  });
+
+  // Middleware to verify JWT tokens
+  const authenticateToken2 = (req: any, res: any, next: any) => {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+
+    if (!token) {
+      return res.status(401).json({ error: 'Access token required' });
+    }
+
+    jwt.verify(token, process.env.JWT_SECRET || 'fallback-secret', (err: any, user: any) => {
+      if (err) {
+        return res.status(403).json({ error: 'Invalid or expired token' });
+      }
+      req.user = user;
+      next();
+    });
+  };
+
+  // User profile endpoints
+  app.get('/api/user/profile', authenticateToken2, async (req: any, res) => {
+    try {
+      const user = req.user;
+
+      // Get user profile from storage
+      const profiles = storage.get('user_profiles') || {};
+      const profile = profiles[user.userId] || {
+        id: user.userId,
+        email: user.email,
+        name: 'User Name',
+        avatar: null,
+        preferences: {
+          theme: 'dark',
+          notifications: true,
+          videoQuality: 'high',
+          autoSync: true
+        }
+      };
+
+      res.json(profile);
+    } catch (error) {
+      console.error('Profile fetch error:', error);
+      res.status(500).json({ error: 'Failed to fetch profile' });
+    }
+  });
+
+  app.patch('/api/user/profile', authenticateToken2, async (req: any, res) => {
+    try {
+      const user = req.user;
+      const updates = req.body;
+
+      // Get existing profiles
+      const profiles = storage.get('user_profiles') || {};
+      const currentProfile = profiles[user.userId] || {
+        id: user.userId,
+        email: user.email,
+        name: 'User Name',
+        avatar: null,
+        preferences: {}
+      };
+
+      // Update profile (merge preferences if provided)
+      const updatedProfile = {
+        ...currentProfile,
+        ...updates,
+        id: user.userId, // Ensure ID cannot be changed
+        email: user.email // Ensure email cannot be changed via this endpoint
+      };
+
+      if (updates.preferences) {
+        updatedProfile.preferences = {
+          ...currentProfile.preferences,
+          ...updates.preferences
+        };
+      }
+
+      profiles[user.userId] = updatedProfile;
+      storage.set('user_profiles', profiles);
+
+      res.json(updatedProfile);
+    } catch (error) {
+      console.error('Profile update error:', error);
+      res.status(500).json({ error: 'Failed to update profile' });
+    }
+  });
+
+  // Video management endpoints
+  app.get('/api/user/videos', authenticateToken2, async (req: any, res) => {
+    try {
+      const user = req.user;
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 20;
+      const status = req.query.status as string;
+
+      // Get user videos from storage
+      let userVideos = storage.get(`videos_${user.userId}`) || [];
+
+      // Filter by status if provided
+      if (status) {
+        userVideos = userVideos.filter((video: any) => video.status === status);
+      }
+
+      // Pagination
+      const startIndex = (page - 1) * limit;
+      const endIndex = startIndex + limit;
+      const paginatedVideos = userVideos.slice(startIndex, endIndex);
+
+      res.json({
+        videos: paginatedVideos,
+        total: userVideos.length,
+        page,
+        limit,
+        totalPages: Math.ceil(userVideos.length / limit)
+      });
+    } catch (error) {
+      console.error('Videos fetch error:', error);
+      res.status(500).json({ error: 'Failed to fetch videos' });
+    }
+  });
+
+  app.post('/api/videos', authenticateToken2, async (req: any, res) => {
+    try {
+      const user = req.user;
+      const { title, description, settings, audioFile } = req.body;
+
+      if (!title) {
+        return res.status(400).json({ error: 'Video title required' });
+      }
+
+      // Create new video job
+      const videoJob = {
+        id: `video_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+        userId: user.userId,
+        title,
+        description: description || '',
+        settings: {
+          resolution: '1920x1080',
+          frameRate: 30,
+          duration: 180,
+          waveformStyle: 'bars',
+          backgroundColor: '#000000',
+          textColor: '#ffffff',
+          ...settings
+        },
+        audioFile: audioFile || null,
+        status: 'pending',
+        progress: 0,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        estimatedCompletion: new Date(Date.now() + 300000).toISOString() // 5 minutes
+      };
+
+      // Store video job
+      const userVideos = storage.get(`videos_${user.userId}`) || [];
+      userVideos.unshift(videoJob);
+      storage.set(`videos_${user.userId}`, userVideos);
+
+      // Simulate processing workflow
+      setTimeout(() => {
+        const videos = storage.get(`videos_${user.userId}`) || [];
+        const video = videos.find((v: any) => v.id === videoJob.id);
+        if (video) {
+          video.status = 'processing';
+          video.progress = 25;
+          video.updatedAt = new Date().toISOString();
+          storage.set(`videos_${user.userId}`, videos);
+        }
+      }, 2000);
+
+      setTimeout(() => {
+        const videos = storage.get(`videos_${user.userId}`) || [];
+        const video = videos.find((v: any) => v.id === videoJob.id);
+        if (video) {
+          video.status = 'processing';
+          video.progress = 75;
+          video.updatedAt = new Date().toISOString();
+          storage.set(`videos_${user.userId}`, videos);
+        }
+      }, 8000);
+
+      setTimeout(() => {
+        const videos = storage.get(`videos_${user.userId}`) || [];
+        const video = videos.find((v: any) => v.id === videoJob.id);
+        if (video) {
+          video.status = 'completed';
+          video.progress = 100;
+          video.downloadUrl = `https://typebeatz.voodoo808.com/api/videos/${video.id}/download`;
+          video.thumbnailUrl = `https://typebeatz.voodoo808.com/api/videos/${video.id}/thumbnail`;
+          video.updatedAt = new Date().toISOString();
+          storage.set(`videos_${user.userId}`, videos);
+        }
+      }, 15000);
+
+      res.status(201).json(videoJob);
+    } catch (error) {
+      console.error('Video creation error:', error);
+      res.status(500).json({ error: 'Failed to create video job' });
+    }
+  });
+
+  app.get('/api/videos/:id/status', authenticateToken2, async (req: any, res) => {
+    try {
+      const user = req.user;
+      const videoId = req.params.id;
+
+      const userVideos = storage.get(`videos_${user.userId}`) || [];
+      const video = userVideos.find((v: any) => v.id === videoId);
+
+      if (!video) {
+        return res.status(404).json({ error: 'Video not found' });
+      }
+
+      res.json({
+        id: video.id,
+        status: video.status,
+        progress: video.progress,
+        downloadUrl: video.downloadUrl || null,
+        thumbnailUrl: video.thumbnailUrl || null,
+        estimatedCompletion: video.estimatedCompletion,
+        updatedAt: video.updatedAt
+      });
+    } catch (error) {
+      console.error('Video status error:', error);
+      res.status(500).json({ error: 'Failed to get video status' });
+    }
+  });
+
+  app.get('/api/videos/:id/download', authenticateToken2, async (req: any, res) => {
+    try {
+      const user = req.user;
+      const videoId = req.params.id;
+
+      const userVideos = storage.get(`videos_${user.userId}`) || [];
+      const video = userVideos.find((v: any) => v.id === videoId);
+
+      if (!video) {
+        return res.status(404).json({ error: 'Video not found' });
+      }
+
+      if (video.status !== 'completed') {
+        return res.status(400).json({ error: 'Video not ready for download' });
+      }
+
+      // In a real implementation, this would serve the actual video file
+      res.json({
+        downloadUrl: video.downloadUrl,
+        expires: new Date(Date.now() + 3600000).toISOString() // 1 hour
+      });
+    } catch (error) {
+      console.error('Video download error:', error);
+      res.status(500).json({ error: 'Failed to get download link' });
+    }
+  });
+
+  app.delete('/api/videos/:id', authenticateToken2, async (req: any, res) => {
+    try {
+      const user = req.user;
+      const videoId = req.params.id;
+
+      const userVideos = storage.get(`videos_${user.userId}`) || [];
+      const videoIndex = userVideos.findIndex((v: any) => v.id === videoId);
+
+      if (videoIndex === -1) {
+        return res.status(404).json({ error: 'Video not found' });
+      }
+
+      userVideos.splice(videoIndex, 1);
+      storage.set(`videos_${user.userId}`, userVideos);
+
+      res.json({ message: 'Video deleted successfully' });
+    } catch (error) {
+      console.error('Video deletion error:', error);
+      res.status(500).json({ error: 'Failed to delete video' });
+    }
+  });
+
+  // Health check endpoint
+  app.get('/api/health', (req, res) => {
+    res.json({ 
+      status: 'ok', 
+      timestamp: new Date().toISOString(),
+      version: '1.0.0',
+      features: {
+        authentication: true,
+        userProfiles: true,
+        videoManagement: true,
+        crossPlatformSync: true
+      }
+    });
+  });
+
+  // API documentation endpoint
+  app.get('/api/docs', (req, res) => {
+    res.json({
+      title: 'TypeBeatz API',
+      version: '1.0.0',
+      description: 'API for TypeBeatz desktop app integration',
+      endpoints: {
+        auth: {
+          'POST /api/auth/login': 'Login and get access token',
+          'POST /api/auth/refresh': 'Refresh access token'
+        },
+        user: {
+          'GET /api/user/profile': 'Get user profile',
+          'PATCH /api/user/profile': 'Update user profile'
+        },
+        videos: {
+          'GET /api/user/videos': 'Get user videos with pagination',
+          'POST /api/videos': 'Create new video generation job',
+          'GET /api/videos/:id/status': 'Check video generation status',
+          'GET /api/videos/:id/download': 'Get video download link',
+          'DELETE /api/videos/:id': 'Delete video'
+        }
+      }
+    });
+  });
 
   const httpServer = createServer(app);
   return httpServer;

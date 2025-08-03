@@ -1,4 +1,3 @@
-
 const API_BASE_URL = import.meta.env.VITE_API_URL || '';
 
 interface ApiResponse<T = any> {
@@ -54,171 +53,286 @@ interface CreateVideoJobRequest {
   };
 }
 
+// API client for desktop app integration
 class ApiClient {
+  private baseUrl: string;
   private accessToken: string | null = null;
   private refreshToken: string | null = null;
 
-  constructor() {
-    // Load tokens from localStorage
-    this.accessToken = localStorage.getItem('access_token');
-    this.refreshToken = localStorage.getItem('refresh_token');
+  constructor(baseUrl: string = '') {
+    this.baseUrl = baseUrl;
+    this.loadTokensFromStorage();
   }
 
-  private async request<T>(
-    endpoint: string,
-    options: RequestInit = {}
-  ): Promise<ApiResponse<T>> {
-    const url = `${API_BASE_URL}${endpoint}`;
-    
-    const config: RequestInit = {
-      ...options,
-      headers: {
-        'Content-Type': 'application/json',
-        ...options.headers,
-      },
+  private loadTokensFromStorage() {
+    if (typeof window !== 'undefined') {
+      this.accessToken = localStorage.getItem('access_token');
+      this.refreshToken = localStorage.getItem('refresh_token');
+    }
+  }
+
+  private saveTokensToStorage() {
+    if (typeof window !== 'undefined') {
+      if (this.accessToken) {
+        localStorage.setItem('access_token', this.accessToken);
+      }
+      if (this.refreshToken) {
+        localStorage.setItem('refresh_token', this.refreshToken);
+      }
+    }
+  }
+
+  private clearTokensFromStorage() {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
+    }
+  }
+
+  setTokens(accessToken: string, refreshToken: string) {
+    this.accessToken = accessToken;
+    this.refreshToken = refreshToken;
+    this.saveTokensToStorage();
+  }
+
+  clearTokens() {
+    this.accessToken = null;
+    this.refreshToken = null;
+    this.clearTokensFromStorage();
+  }
+
+  isAuthenticated(): boolean {
+    return !!this.accessToken;
+  }
+
+  async request(endpoint: string, options: RequestInit = {}) {
+    const url = `${this.baseUrl}/api${endpoint}`;
+
+    const headers = {
+      'Content-Type': 'application/json',
+      ...options.headers,
     };
 
-    // Add auth header if we have a token
     if (this.accessToken) {
-      config.headers = {
-        ...config.headers,
-        Authorization: `Bearer ${this.accessToken}`,
-      };
+      headers['Authorization'] = `Bearer ${this.accessToken}`;
     }
 
     try {
-      const response = await fetch(url, config);
-      
-      // If token expired, try to refresh
+      const response = await fetch(url, {
+        ...options,
+        headers,
+      });
+
       if (response.status === 401 && this.refreshToken) {
-        const refreshResult = await this.refreshTokens();
-        if (refreshResult.data) {
-          // Retry the original request with new token
-          config.headers = {
-            ...config.headers,
-            Authorization: `Bearer ${this.accessToken}`,
-          };
-          const retryResponse = await fetch(url, config);
-          const retryData = await retryResponse.json();
-          return { data: retryData };
+        // Try to refresh token
+        const refreshed = await this.refreshAccessToken();
+        if (refreshed) {
+          // Retry original request with new token
+          headers['Authorization'] = `Bearer ${this.accessToken}`;
+          return fetch(url, { ...options, headers });
+        } else {
+          // Refresh failed, clear tokens
+          this.clearTokens();
+          throw new Error('Authentication failed');
         }
       }
 
-      const data = await response.json();
-      
-      if (!response.ok) {
-        return { error: data.message || 'Request failed' };
-      }
-
-      return { data };
+      return response;
     } catch (error) {
-      return { error: 'Network error' };
+      console.error('API request failed:', error);
+      throw error;
     }
+  }
+
+  async refreshAccessToken(): Promise<boolean> {
+    if (!this.refreshToken) return false;
+
+    try {
+      const response = await fetch(`${this.baseUrl}/api/auth/refresh`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ refresh_token: this.refreshToken }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        this.accessToken = data.access_token;
+        this.saveTokensToStorage();
+        return true;
+      }
+    } catch (error) {
+      console.error('Token refresh failed:', error);
+    }
+
+    return false;
   }
 
   // Auth methods
-  async login(credentials: LoginRequest): Promise<ApiResponse<AuthResponse>> {
-    const result = await this.request<AuthResponse>('/auth/login', {
+  async login(email: string, password: string) {
+    const response = await this.request('/auth/login', {
       method: 'POST',
-      body: JSON.stringify(credentials),
+      body: JSON.stringify({ email, password }),
     });
 
-    if (result.data) {
-      this.setTokens(result.data.accessToken, result.data.refreshToken);
+    if (response.ok) {
+      const data = await response.json();
+      this.setTokens(data.access_token, data.refresh_token);
+      return data;
     }
 
-    return result;
+    throw new Error('Login failed');
   }
 
-  async register(userData: RegisterRequest): Promise<ApiResponse<AuthResponse>> {
-    const result = await this.request<AuthResponse>('/auth/register', {
-      method: 'POST',
-      body: JSON.stringify(userData),
-    });
-
-    if (result.data) {
-      this.setTokens(result.data.accessToken, result.data.refreshToken);
-    }
-
-    return result;
-  }
-
-  async refreshTokens(): Promise<ApiResponse<{ accessToken: string; refreshToken: string }>> {
-    const result = await this.request<{ accessToken: string; refreshToken: string }>('/auth/refresh', {
-      method: 'POST',
-      body: JSON.stringify({ refreshToken: this.refreshToken }),
-    });
-
-    if (result.data) {
-      this.setTokens(result.data.accessToken, result.data.refreshToken);
-    }
-
-    return result;
-  }
-
-  async logout(): Promise<ApiResponse<void>> {
-    const result = await this.request('/auth/logout', {
-      method: 'POST',
-    });
-
+  async logout() {
     this.clearTokens();
-    return result;
   }
 
-  // Profile methods
-  async getProfile(): Promise<ApiResponse<AuthResponse['user']>> {
-    return this.request('/user/profile');
+  // User methods
+  async getUserProfile() {
+    const response = await this.request('/user/profile');
+    if (response.ok) {
+      return response.json();
+    }
+    throw new Error('Failed to fetch user profile');
   }
 
-  async updateProfile(updates: { displayName?: string; avatar?: string }): Promise<ApiResponse<AuthResponse['user']>> {
-    return this.request('/user/profile', {
+  async updateUserProfile(updates: any) {
+    const response = await this.request('/user/profile', {
       method: 'PATCH',
       body: JSON.stringify(updates),
     });
+    if (response.ok) {
+      return response.json();
+    }
+    throw new Error('Failed to update user profile');
   }
 
   // Video methods
-  async getUserVideos(): Promise<ApiResponse<VideoJob[]>> {
-    return this.request('/user/videos');
-  }
-
-  async createVideoJob(jobData: CreateVideoJobRequest): Promise<ApiResponse<VideoJob>> {
-    return this.request('/videos', {
-      method: 'POST',
-      body: JSON.stringify(jobData),
+  async getUserVideos(page: number = 1, limit: number = 20, status?: string) {
+    const params = new URLSearchParams({
+      page: page.toString(),
+      limit: limit.toString(),
     });
+
+    if (status) {
+      params.append('status', status);
+    }
+
+    const response = await this.request(`/user/videos?${params.toString()}`);
+    if (response.ok) {
+      return response.json();
+    }
+    throw new Error('Failed to fetch user videos');
   }
 
-  async getVideoStatus(videoId: string): Promise<ApiResponse<{
-    id: string;
-    status: string;
-    progress?: number;
-    resultUrl?: string;
-    error?: string;
-  }>> {
-    return this.request(`/videos/${videoId}/status`);
+  async createVideo(videoData: {
+    title: string;
+    description?: string;
+    settings?: any;
+    audioFile?: string;
+  }) {
+    const response = await this.request('/videos', {
+      method: 'POST',
+      body: JSON.stringify(videoData),
+    });
+    if (response.ok) {
+      return response.json();
+    }
+    throw new Error('Failed to create video job');
   }
 
-  // Token management
-  private setTokens(accessToken: string, refreshToken: string) {
-    this.accessToken = accessToken;
-    this.refreshToken = refreshToken;
-    localStorage.setItem('access_token', accessToken);
-    localStorage.setItem('refresh_token', refreshToken);
+  async getVideoStatus(videoId: string) {
+    const response = await this.request(`/videos/${videoId}/status`);
+    if (response.ok) {
+      return response.json();
+    }
+    throw new Error('Failed to get video status');
   }
 
-  private clearTokens() {
-    this.accessToken = null;
-    this.refreshToken = null;
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
+  async getVideoDownloadLink(videoId: string) {
+    const response = await this.request(`/videos/${videoId}/download`);
+    if (response.ok) {
+      return response.json();
+    }
+    throw new Error('Failed to get download link');
   }
 
-  // Check if user is authenticated
-  isAuthenticated(): boolean {
-    return Boolean(this.accessToken);
+  async deleteVideo(videoId: string) {
+    const response = await this.request(`/videos/${videoId}`, {
+      method: 'DELETE',
+    });
+    if (response.ok) {
+      return response.json();
+    }
+    throw new Error('Failed to delete video');
+  }
+
+  // Health check
+  async getHealth() {
+    const response = await this.request('/health');
+    if (response.ok) {
+      return response.json();
+    }
+    throw new Error('Health check failed');
+  }
+
+  // API documentation
+  async getApiDocs() {
+    const response = await this.request('/docs');
+    if (response.ok) {
+      return response.json();
+    }
+    throw new Error('Failed to fetch API documentation');
   }
 }
 
 export const apiClient = new ApiClient();
+
+// React hooks for API integration
+export const useApiClient = () => {
+  return apiClient;
+};
+
+// Types for TypeScript
+export interface Video {
+  id: string;
+  userId: string;
+  title: string;
+  description: string;
+  settings: {
+    resolution: string;
+    frameRate: number;
+    duration: number;
+    waveformStyle: string;
+    backgroundColor: string;
+    textColor: string;
+  };
+  audioFile?: string;
+  status: 'pending' | 'processing' | 'completed' | 'failed';
+  progress: number;
+  downloadUrl?: string;
+  thumbnailUrl?: string;
+  createdAt: string;
+  updatedAt: string;
+  estimatedCompletion?: string;
+}
+
+export interface UserProfile {
+  id: string;
+  email: string;
+  name: string;
+  avatar?: string;
+  preferences: {
+    theme: string;
+    notifications: boolean;
+    videoQuality: string;
+    autoSync: boolean;
+  };
+}
+
+export interface ApiResponse<T> {
+  data?: T;
+  error?: string;
+  message?: string;
+}
 export type { VideoJob, CreateVideoJobRequest, AuthResponse };
