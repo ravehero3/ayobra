@@ -64,8 +64,8 @@ export default function Navigation() {
           <div className="hidden md:flex items-center">
             <SignedOut>
               <SignInButton mode="modal">
-                <button className="h-8 w-8 p-0 hover:bg-transparent">
-                  <UserIcon className="h-8 w-8 text-white hover:text-gray-400 transition-colors duration-200" />
+                <button className="h-[5vh] w-[5vh] p-0 hover:bg-transparent flex items-center justify-center">
+                  <UserIcon className="h-6 w-6 text-white hover:text-gray-400 transition-colors duration-200" />
                 </button>
               </SignInButton>
             </SignedOut>
@@ -73,7 +73,7 @@ export default function Navigation() {
               <UserButton 
                 appearance={{
                   elements: {
-                    avatarBox: "h-8 w-8"
+                    avatarBox: "h-[5vh] w-[5vh] min-h-[32px] min-w-[32px]"
                   }
                 }}
               />
@@ -84,8 +84,8 @@ export default function Navigation() {
           <div className="md:hidden flex items-center space-x-3">
             <SignedOut>
               <SignInButton mode="modal">
-                <button className="h-8 w-8 p-0 hover:bg-transparent">
-                  <UserIcon className="h-8 w-8 text-white hover:text-gray-400 transition-colors duration-200" />
+                <button className="h-[5vh] w-[5vh] p-0 hover:bg-transparent flex items-center justify-center">
+                  <UserIcon className="h-6 w-6 text-white hover:text-gray-400 transition-colors duration-200" />
                 </button>
               </SignInButton>
             </SignedOut>
@@ -93,7 +93,7 @@ export default function Navigation() {
               <UserButton 
                 appearance={{
                   elements: {
-                    avatarBox: "h-8 w-8"
+                    avatarBox: "h-[5vh] w-[5vh] min-h-[32px] min-w-[32px]"
                   }
                 }}
               />
