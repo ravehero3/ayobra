@@ -9,7 +9,7 @@ import UserProfile from "@/pages/user-profile";
 import NotFound from "@/pages/not-found";
 
 // Import Clerk publishable key
-const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY || import.meta.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
 
 console.log('Environment check:', {
   hasClerkKey: !!PUBLISHABLE_KEY,
