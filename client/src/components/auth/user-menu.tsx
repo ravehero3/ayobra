@@ -12,7 +12,8 @@ import { useAuth } from '@/hooks/use-auth';
 import { AuthModal } from './auth-modal';
 import { SupabaseSetup } from './supabase-setup';
 import { authService } from '@/lib/auth';
-import { User, LogOut, Settings } from 'lucide-react';
+import { LogOut, Settings } from 'lucide-react';
+import { UserIcon } from '@/components/icons/user-icon';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 
 export function UserMenu() {
@@ -88,8 +89,8 @@ export function UserMenu() {
         className="relative h-8 w-8 rounded-full p-0 hover:bg-gray-800"
       >
         <Avatar className="h-8 w-8">
-          <AvatarFallback className="bg-gray-700 text-white">
-            <User className="h-4 w-4" />
+          <AvatarFallback className="bg-gray-700 text-white hover:text-gray-400 transition-colors duration-200">
+            <UserIcon className="h-4 w-4" />
           </AvatarFallback>
         </Avatar>
       </Button>
