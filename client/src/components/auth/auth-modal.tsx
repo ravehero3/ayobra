@@ -11,6 +11,7 @@ import { useToast } from '@/hooks/use-toast';
 import { ForgotPasswordForm } from './forgot-password-form';
 import { Loader2 } from 'lucide-react';
 import { FaGoogle } from 'react-icons/fa';
+import userIcon from '@assets/user_1754235747400.png';
 
 const authSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -249,14 +250,17 @@ export function AuthModal({
           <Button
             onClick={handleGoogleSignIn}
             disabled={googleLoading}
-            className="w-full bg-white hover:bg-gray-100 text-gray-900 h-12 font-medium flex items-center justify-center gap-3"
+            className="w-12 h-12 bg-transparent hover:bg-transparent p-0 flex items-center justify-center"
           >
             {googleLoading ? (
-              <Loader2 className="h-5 w-5 animate-spin" />
+              <Loader2 className="h-8 w-8 animate-spin text-white" />
             ) : (
-              <FaGoogle className="h-5 w-5 text-red-500" />
+              <img 
+                src={userIcon} 
+                alt="Sign in" 
+                className="h-8 w-8 filter invert hover:invert-0 hover:brightness-50 transition-all duration-200"
+              />
             )}
-            {googleLoading ? 'Signing in...' : 'Continue with Google'}
           </Button>
 
           {/* Divider */}
