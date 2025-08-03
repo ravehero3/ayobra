@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { FolderOpen, Menu, X } from "lucide-react";
+import { FolderOpen, Menu, X, User as UserIcon } from "lucide-react";
 import { Button } from "@/components/ui/button"
 import { useLocation } from "wouter";
-import { UserMenu } from "@/components/auth/user-menu";
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
 
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -62,12 +62,42 @@ export default function Navigation() {
 
           {/* User Menu */}
           <div className="hidden md:flex items-center">
-            <UserMenu />
+            <SignedOut>
+              <SignInButton mode="modal">
+                <button className="h-8 w-8 p-0 hover:bg-transparent">
+                  <UserIcon className="h-8 w-8 text-white hover:text-gray-400 transition-colors duration-200" />
+                </button>
+              </SignInButton>
+            </SignedOut>
+            <SignedIn>
+              <UserButton 
+                appearance={{
+                  elements: {
+                    avatarBox: "h-8 w-8"
+                  }
+                }}
+              />
+            </SignedIn>
           </div>
 
           {/* Mobile Icons */}
           <div className="md:hidden flex items-center space-x-3">
-            <UserMenu />
+            <SignedOut>
+              <SignInButton mode="modal">
+                <button className="h-8 w-8 p-0 hover:bg-transparent">
+                  <UserIcon className="h-8 w-8 text-white hover:text-gray-400 transition-colors duration-200" />
+                </button>
+              </SignInButton>
+            </SignedOut>
+            <SignedIn>
+              <UserButton 
+                appearance={{
+                  elements: {
+                    avatarBox: "h-8 w-8"
+                  }
+                }}
+              />
+            </SignedIn>
             <button
               className="text-white"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}

@@ -3,26 +3,34 @@ import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { AuthProvider } from "@/hooks/use-auth";
+import { ClerkProvider } from "@clerk/clerk-react";
 import Home from "@/pages/home";
-import Auth from "@/pages/auth";
-import ResetComplete from "@/pages/reset-complete";
-import { VerifyEmailPage } from "@/pages/verify-email";
 import UserProfile from "@/pages/user-profile";
 import NotFound from "@/pages/not-found";
 
-// Import OAuth debugging in development
-if (import.meta.env.DEV) {
-  import("./lib/oauth-debug");
+// Import Clerk publishable key
+const rawKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+
+// Extract just the publishable key from the environment variable
+const PUBLISHABLE_KEY = rawKey?.includes('pk_test_') 
+  ? rawKey.match(/pk_test_[a-zA-Z0-9]+/)?.[0] 
+  : rawKey;
+
+// Debug environment variables
+console.log('Environment check:', {
+  hasClerkKey: !!PUBLISHABLE_KEY,
+  clerkKeyPreview: PUBLISHABLE_KEY ? PUBLISHABLE_KEY.substring(0, 20) + '...' : 'undefined',
+  rawKeyPreview: rawKey ? rawKey.substring(0, 50) + '...' : 'undefined'
+});
+
+if (!PUBLISHABLE_KEY) {
+  throw new Error(`Missing Publishable Key. Available env vars: ${Object.keys(import.meta.env).join(', ')}`);
 }
 
 function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
-      <Route path="/auth" component={Auth} />
-      <Route path="/auth/reset-complete" component={ResetComplete} />
-      <Route path="/verify-email" component={VerifyEmailPage} />
       <Route path="/profile" component={UserProfile} />
       <Route component={NotFound} />
     </Switch>
@@ -31,16 +39,16 @@ function Router() {
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <AuthProvider>
+    <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
+      <QueryClientProvider client={queryClient}>
         <TooltipProvider>
           <div className="dark">
             <Toaster />
             <Router />
           </div>
         </TooltipProvider>
-      </AuthProvider>
-    </QueryClientProvider>
+      </QueryClientProvider>
+    </ClerkProvider>
   );
 }
 
