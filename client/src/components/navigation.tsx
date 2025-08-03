@@ -68,9 +68,9 @@ export default function Navigation() {
           <div className="hidden md:flex items-center">
             <button 
               onClick={() => setIsProfileModalOpen(true)}
-              className="p-1 hover:bg-transparent flex items-center justify-center transition-transform duration-200 hover:scale-110"
+              className="group p-1 hover:bg-transparent flex items-center justify-center transition-transform duration-200 hover:scale-110"
             >
-              <UserIcon className="h-8 w-8" />
+              <UserIcon className="h-7 w-7" />
             </button>
           </div>
 
@@ -78,9 +78,9 @@ export default function Navigation() {
           <div className="md:hidden flex items-center space-x-3">
             <button 
               onClick={() => setIsProfileModalOpen(true)}
-              className="p-1 hover:bg-transparent flex items-center justify-center transition-transform duration-200 hover:scale-110"
+              className="group p-1 hover:bg-transparent flex items-center justify-center transition-transform duration-200 hover:scale-110"
             >
-              <UserIcon className="h-8 w-8" />
+              <UserIcon className="h-7 w-7" />
             </button>
             <button
               className="text-white"
