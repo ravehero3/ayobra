@@ -6,12 +6,13 @@ import { useLocation } from "wouter";
 import { SignedIn, SignedOut, SignInButton, useUser } from "@clerk/clerk-react";
 import { UserIcon } from "@/components/icons/user-icon";
 import { UserProfileModal } from "@/components/auth/user-profile-modal";
+import { useAuth } from '@/hooks/use-auth';
 
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
-  const { user } = useUser();
+  const { user, loading } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -69,8 +70,9 @@ export default function Navigation() {
             <button 
               onClick={() => setIsProfileModalOpen(true)}
               className="group p-1 hover:bg-transparent flex items-center justify-center transition-transform duration-200 hover:scale-110"
+              title={user ? 'View Profile' : 'Sign In'}
             >
-              <UserIcon className="h-7 w-7" />
+              <UserIcon className={`h-7 w-7 ${user ? 'opacity-100' : 'opacity-80'}`} />
             </button>
           </div>
 
@@ -79,8 +81,9 @@ export default function Navigation() {
             <button 
               onClick={() => setIsProfileModalOpen(true)}
               className="group p-1 hover:bg-transparent flex items-center justify-center transition-transform duration-200 hover:scale-110"
+              title={user ? 'View Profile' : 'Sign In'}
             >
-              <UserIcon className="h-7 w-7" />
+              <UserIcon className={`h-7 w-7 ${user ? 'opacity-100' : 'opacity-80'}`} />
             </button>
             <button
               className="text-white"
