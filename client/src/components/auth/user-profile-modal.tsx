@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -6,8 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { useAuth } from '@/hooks/use-auth';
-import { AuthModal } from './auth-modal';
+import { SignedIn, SignedOut, SignInButton, UserButton, useUser, useAuth } from '@clerk/clerk-react';
 import { X, User, Mail, Settings, LogOut, Edit, Camera } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -26,11 +24,10 @@ interface UserProfileModalProps {
 }
 
 export function UserProfileModal({ isOpen, onClose }: UserProfileModalProps) {
-  const { user, signOut, loading } = useAuth();
+  const { user, isLoaded } = useUser();
+  const { signOut } = useAuth();
   const { toast } = useToast();
   const [isEditing, setIsEditing] = useState(false);
-  const [showAuthModal, setShowAuthModal] = useState(false);
-  const [avatarUrl, setAvatarUrl] = useState<string>('');
 
   const {
     register,
@@ -40,7 +37,7 @@ export function UserProfileModal({ isOpen, onClose }: UserProfileModalProps) {
   } = useForm<UpdateProfileFormData>({
     resolver: zodResolver(updateProfileSchema),
     defaultValues: {
-      displayName: user?.user_metadata?.display_name || user?.email?.split('@')[0] || '',
+      displayName: user?.fullName || user?.firstName || user?.emailAddresses[0]?.emailAddress?.split('@')[0] || '',
     },
   });
 
@@ -51,7 +48,10 @@ export function UserProfileModal({ isOpen, onClose }: UserProfileModalProps) {
 
   const handleSave = async (data: UpdateProfileFormData) => {
     try {
-      // In a real app, you'd update the user's profile via Supabase
+      await user?.update({
+        firstName: data.displayName.split(' ')[0],
+        lastName: data.displayName.split(' ').slice(1).join(' ') || '',
+      });
       toast({
         title: "Success",
         description: "Profile updated successfully!",
@@ -66,23 +66,8 @@ export function UserProfileModal({ isOpen, onClose }: UserProfileModalProps) {
     }
   };
 
-  const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setAvatarUrl(e.target?.result as string);
-        toast({
-          title: "Avatar Updated",
-          description: "Your profile picture has been updated!",
-        });
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
   // If loading, show loading state
-  if (loading) {
+  if (!isLoaded) {
     return (
       <Dialog open={isOpen} onOpenChange={onClose}>
         <DialogContent className="sm:max-w-md bg-gray-800 border-gray-700">
@@ -97,70 +82,13 @@ export function UserProfileModal({ isOpen, onClose }: UserProfileModalProps) {
     );
   }
 
-  // If user is not authenticated, show auth modal
-  if (!user) {
-    return (
-      <>
-        <Dialog open={isOpen} onOpenChange={onClose}>
-          <DialogContent className="sm:max-w-md bg-gray-800 border-gray-700">
-            <DialogHeader className="relative">
-              <DialogTitle className="text-white text-xl font-semibold">
-                Sign In Required
-              </DialogTitle>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="absolute -top-2 -right-2 h-8 w-8 p-0 text-gray-400 hover:text-white"
-                onClick={onClose}
-              >
-                <X className="h-4 w-4" />
-              </Button>
-            </DialogHeader>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-center space-y-6"
-            >
-              <div className="h-20 w-20 bg-gray-700 rounded-full flex items-center justify-center mx-auto">
-                <User className="h-10 w-10 text-gray-400" />
-              </div>
-              <div className="space-y-2">
-                <p className="text-gray-300">Please sign in to view your profile</p>
-                <p className="text-sm text-gray-400">Create an account or sign in to access your personal dashboard</p>
-              </div>
-              <Button
-                onClick={() => {
-                  onClose();
-                  setShowAuthModal(true);
-                }}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white"
-              >
-                Sign In / Sign Up
-              </Button>
-            </motion.div>
-          </DialogContent>
-        </Dialog>
-
-        <AuthModal
-          isOpen={showAuthModal}
-          onClose={() => setShowAuthModal(false)}
-          defaultMode="signin"
-        />
-      </>
-    );
-  }
-
-  // If user is authenticated, show profile
-  const displayName = user.user_metadata?.display_name || user.email?.split('@')[0] || 'User';
-  const initials = displayName.split(' ').map(n => n[0]).join('').toUpperCase();
-
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md bg-gray-800 border-gray-700">
         <DialogHeader className="relative">
           <DialogTitle className="text-white text-xl font-semibold">
-            Profile Settings
+            <SignedIn>Profile Settings</SignedIn>
+            <SignedOut>Sign In Required</SignedOut>
           </DialogTitle>
           <Button
             variant="ghost"
@@ -172,109 +100,123 @@ export function UserProfileModal({ isOpen, onClose }: UserProfileModalProps) {
           </Button>
         </DialogHeader>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="space-y-6"
-        >
-          {/* User Avatar */}
-          <div className="flex justify-center">
-            <div className="relative">
-              <Avatar className="h-20 w-20">
-                <AvatarImage src={avatarUrl || user.user_metadata?.avatar_url} alt={displayName} />
-                <AvatarFallback className="bg-blue-600 text-white text-lg">
-                  {initials}
-                </AvatarFallback>
-              </Avatar>
-              <label className="absolute bottom-0 right-0 bg-blue-600 rounded-full p-1 cursor-pointer hover:bg-blue-700 transition-colors">
-                <Camera className="h-3 w-3 text-white" />
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleAvatarChange}
-                  className="hidden"
-                />
-              </label>
+        <SignedOut>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center space-y-6"
+          >
+            <div className="h-20 w-20 bg-gray-700 rounded-full flex items-center justify-center mx-auto">
+              <User className="h-10 w-10 text-gray-400" />
             </div>
-          </div>
-
-          {/* User Info */}
-          <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-gray-300">Email</Label>
-              <div className="flex items-center space-x-2 p-3 bg-gray-900 rounded-lg border border-gray-700">
-                <Mail className="h-4 w-4 text-gray-400" />
-                <span className="text-white">{user.email}</span>
+              <p className="text-gray-300">Please sign in to view your profile</p>
+              <p className="text-sm text-gray-400">Create an account or sign in to access your personal dashboard</p>
+            </div>
+            <SignInButton mode="modal">
+              <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+                Sign In / Sign Up
+              </Button>
+            </SignInButton>
+          </motion.div>
+        </SignedOut>
+
+        <SignedIn>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="space-y-6"
+          >
+            {/* User Avatar */}
+            <div className="flex justify-center">
+              <div className="relative">
+                <Avatar className="h-20 w-20">
+                  <AvatarImage src={user?.imageUrl} alt={user?.fullName || 'User'} />
+                  <AvatarFallback className="bg-blue-600 text-white text-lg">
+                    {user?.firstName?.[0]}{user?.lastName?.[0]}
+                  </AvatarFallback>
+                </Avatar>
               </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="displayName" className="text-gray-300">Display Name</Label>
-              {isEditing ? (
-                <form onSubmit={handleSubmit(handleSave)} className="space-y-3">
-                  <Input
-                    id="displayName"
-                    {...register('displayName')}
-                    className="bg-gray-900 border-gray-700 text-white"
-                    placeholder="Enter your display name"
-                  />
-                  {errors.displayName && (
-                    <p className="text-sm text-red-500">{errors.displayName.message}</p>
-                  )}
-                  <div className="flex space-x-2">
-                    <Button
-                      type="submit"
-                      className="flex-1 bg-green-600 hover:bg-green-700 text-white"
-                    >
-                      Save Changes
-                    </Button>
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      onClick={() => setIsEditing(false)}
-                      className="flex-1 text-gray-300 hover:text-white"
-                    >
-                      Cancel
-                    </Button>
-                  </div>
-                </form>
-              ) : (
-                <div className="p-3 bg-gray-900 rounded-lg border border-gray-700">
-                  <span className="text-white">{displayName}</span>
+            {/* User Info */}
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="email" className="text-gray-300">Email</Label>
+                <div className="flex items-center space-x-2 p-3 bg-gray-900 rounded-lg border border-gray-700">
+                  <Mail className="h-4 w-4 text-gray-400" />
+                  <span className="text-white">{user?.emailAddresses[0]?.emailAddress}</span>
                 </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="displayName" className="text-gray-300">Display Name</Label>
+                {isEditing ? (
+                  <form onSubmit={handleSubmit(handleSave)} className="space-y-3">
+                    <Input
+                      id="displayName"
+                      {...register('displayName')}
+                      className="bg-gray-900 border-gray-700 text-white"
+                      placeholder="Enter your display name"
+                    />
+                    {errors.displayName && (
+                      <p className="text-sm text-red-500">{errors.displayName.message}</p>
+                    )}
+                    <div className="flex space-x-2">
+                      <Button
+                        type="submit"
+                        className="flex-1 bg-green-600 hover:bg-green-700 text-white"
+                      >
+                        Save Changes
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        onClick={() => setIsEditing(false)}
+                        className="flex-1 text-gray-300 hover:text-white"
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                  </form>
+                ) : (
+                  <div className="p-3 bg-gray-900 rounded-lg border border-gray-700">
+                    <span className="text-white">{user?.fullName || user?.firstName}</span>
+                  </div>
+                )}
+              </div>
+
+              <div className="text-sm text-gray-400">
+                Member since {new Date(user?.createdAt || '').toLocaleDateString()}
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="space-y-3">
+              {!isEditing && (
+                <Button
+                  onClick={() => {
+                    setIsEditing(true);
+                    setValue('displayName', user?.fullName || user?.firstName || '');
+                  }}
+                  className="w-full bg-gray-700 hover:bg-gray-600 text-white border border-gray-600"
+                >
+                  <Settings className="h-4 w-4 mr-2" />
+                  Edit Profile
+                </Button>
               )}
-            </div>
 
-            <div className="text-sm text-gray-400">
-              Member since {new Date(user.created_at).toLocaleDateString()}
-            </div>
-          </div>
-
-          {/* Action Buttons */}
-          <div className="space-y-3">
-            {!isEditing && (
               <Button
-                onClick={() => {
-                  setIsEditing(true);
-                  setValue('displayName', displayName);
-                }}
-                className="w-full bg-gray-700 hover:bg-gray-600 text-white border border-gray-600"
+                onClick={handleSignOut}
+                variant="ghost"
+                className="w-full text-red-400 hover:text-red-300 hover:bg-red-900/20"
               >
-                <Settings className="h-4 w-4 mr-2" />
-                Edit Profile
+                <LogOut className="h-4 w-4 mr-2" />
+                Sign Out
               </Button>
-            )}
-
-            <Button
-              onClick={handleSignOut}
-              variant="ghost"
-              className="w-full text-red-400 hover:text-red-300 hover:bg-red-900/20"
-            >
-              <LogOut className="h-4 w-4 mr-2" />
-              Sign Out
-            </Button>
-          </div>
-        </motion.div>
+            </div>
+          </motion.div>
+        </SignedIn>
       </DialogContent>
     </Dialog>
   );

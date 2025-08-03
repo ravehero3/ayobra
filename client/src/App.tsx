@@ -9,22 +9,15 @@ import UserProfile from "@/pages/user-profile";
 import NotFound from "@/pages/not-found";
 
 // Import Clerk publishable key
-const rawKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
-// Extract just the publishable key from the environment variable
-const PUBLISHABLE_KEY = rawKey?.includes('pk_test_') 
-  ? rawKey.match(/pk_test_[a-zA-Z0-9]+/)?.[0] 
-  : rawKey;
-
-// Debug environment variables
 console.log('Environment check:', {
   hasClerkKey: !!PUBLISHABLE_KEY,
-  clerkKeyPreview: PUBLISHABLE_KEY ? PUBLISHABLE_KEY.substring(0, 20) + '...' : 'undefined',
-  rawKeyPreview: rawKey ? rawKey.substring(0, 50) + '...' : 'undefined'
+  clerkKeyPreview: PUBLISHABLE_KEY ? PUBLISHABLE_KEY.substring(0, 20) + '...' : 'undefined'
 });
 
 if (!PUBLISHABLE_KEY) {
-  throw new Error(`Missing Publishable Key. Available env vars: ${Object.keys(import.meta.env).join(', ')}`);
+  throw new Error('Missing VITE_CLERK_PUBLISHABLE_KEY environment variable');
 }
 
 function Router() {
