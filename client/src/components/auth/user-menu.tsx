@@ -86,13 +86,9 @@ export function UserMenu() {
       <Button
         variant="ghost"
         onClick={openSignIn}
-        className="relative h-8 w-8 rounded-full p-0 hover:bg-gray-800"
+        className="relative p-2 hover:bg-transparent"
       >
-        <Avatar className="h-8 w-8">
-          <AvatarFallback className="bg-gray-700 text-white hover:text-gray-400 transition-colors duration-200">
-            <UserIcon className="h-4 w-4" />
-          </AvatarFallback>
-        </Avatar>
+        <UserIcon className="h-6 w-6 text-white hover:text-gray-400 transition-colors duration-200" />
       </Button>
 
       <AuthModal
