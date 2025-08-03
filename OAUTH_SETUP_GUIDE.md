@@ -26,14 +26,18 @@ In Supabase Authentication > Providers > Google:
 4. **Redirect URL**: Should auto-populate as:
    `https://qieufitqzeyrwdaqthwz.supabase.co/auth/v1/callback`
 
-### 3. Google Cloud Console Setup
-If you haven't created Google OAuth credentials:
-1. Go to [Google Cloud Console](https://console.cloud.google.com/)
-2. Create/select a project
-3. Enable Google+ API
-4. Create OAuth 2.0 credentials
-5. Add authorized redirect URIs:
+### 3. Google Cloud Console Setup - URGENT FIX NEEDED
+**Problem**: Google is rejecting the connection because your Replit domain isn't authorized.
+
+**Solution**: Go to [Google Cloud Console](https://console.cloud.google.com/)
+1. Find your OAuth 2.0 Client ID: `806182380827-ha8nklvce8v0jgu0pejuqkmef4r9jcna.apps.googleusercontent.com`
+2. Click "Edit" on your OAuth client
+3. Under "Authorized JavaScript origins" add:
+   - `https://ffddbc80-1739-478a-b874-421fe1594063-00-1w96254hu7csr.janeway.replit.dev`
+4. Under "Authorized redirect URIs" ensure you have:
    - `https://qieufitqzeyrwdaqthwz.supabase.co/auth/v1/callback`
+
+**Current Error**: "Web accounts.google.com odmítl připojení" = Google rejected the connection due to unauthorized domain.
 
 ## Current Technical Details
 - **Supabase URL**: https://qieufitqzeyrwdaqthwz.supabase.co

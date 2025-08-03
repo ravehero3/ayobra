@@ -111,6 +111,7 @@ Project focus: Professional marketing landing page for Voodoo808 brand with Supa
 - **User Interface**: Enhanced authentication modal with Google OAuth, email/password, and forgot password options
 - **Email/Password Backup**: Email authentication remains available as secondary option
 - **Migration Completed (Jan 2025)**: Full migration to Replit environment completed with working authentication
+- **OAuth Domain Issue Identified**: Google OAuth requires Replit domain to be added to authorized origins in Google Cloud Console
 
 ### Architectural Decisions
 
