@@ -99,12 +99,35 @@ export const authService = {
       };
     }
 
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-    });
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: typeof window !== 'undefined' ? window.location.origin + '/verify-email' : undefined
+        }
+      });
 
-    return { data, error };
+      // Handle email service errors specifically
+      if (error) {
+        if (error.message.includes('email') && (error.message.includes('sending') || error.message.includes('confirmation'))) {
+          return {
+            data: null,
+            error: { 
+              message: 'Email service not configured. Please contact support or try again later. You can also try signing in if you already have an account.' 
+            }
+          };
+        }
+      }
+
+      return { data, error };
+    } catch (err) {
+      console.error('Sign up error:', err);
+      return {
+        data: null,
+        error: { message: 'Failed to create account. Please try again.' }
+      };
+    }
   },
 
   // Sign in with email and password

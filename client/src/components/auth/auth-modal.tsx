@@ -61,15 +61,29 @@ export function AuthModal({
           variant: 'destructive',
         });
       } else {
-        toast({
-          title: mode === 'signin' ? 'Welcome back!' : 'Account created!',
-          description: mode === 'signin' 
-            ? 'You have successfully signed in.' 
-            : 'Please check your email to confirm your account.',
-        });
-        onClose();
-        form.reset();
-        setMode('menu');
+        if (mode === 'signin') {
+          toast({
+            title: 'Welcome back!',
+            description: 'You have successfully signed in.',
+          });
+          onClose();
+          form.reset();
+          setMode('menu');
+        } else if (mode === 'signup') {
+          // Handle signup success - may or may not need email confirmation
+          const needsConfirmation = result?.data?.user && !result?.data?.session;
+          toast({
+            title: 'Account created!',
+            description: needsConfirmation 
+              ? 'Please check your email to confirm your account.'
+              : 'Your account is ready! You can now sign in.',
+          });
+          if (!needsConfirmation) {
+            onClose();
+            form.reset();
+            setMode('menu');
+          }
+        }
       }
     } catch (error) {
       toast({
