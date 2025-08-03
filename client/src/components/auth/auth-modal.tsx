@@ -85,25 +85,34 @@ export function AuthModal({
   const handleGoogleSignIn = async () => {
     setGoogleLoading(true);
     try {
+      // Debug OAuth configuration in development
+      if (import.meta.env.DEV) {
+        console.log('Starting Google OAuth...');
+        console.log('Current URL:', window.location.href);
+      }
+
       const result = await signInWithGoogle();
       
       if (result?.error) {
+        console.error('Google OAuth error details:', result.error);
         toast({
-          title: 'Authentication Error',
-          description: result.error.message,
+          title: 'Google Authentication Error',
+          description: result.error.message || 'Failed to authenticate with Google. Please check your configuration.',
           variant: 'destructive',
         });
       } else {
+        console.log('Google OAuth initiated successfully');
         toast({
-          title: 'Success!',
-          description: 'Redirecting to Google...',
+          title: 'Redirecting to Google...',
+          description: 'Please complete authentication in the popup window.',
         });
-        onClose();
+        // Don't close modal immediately - let OAuth complete
       }
     } catch (error) {
+      console.error('Google OAuth exception:', error);
       toast({
-        title: 'Error',
-        description: 'Something went wrong. Please try again.',
+        title: 'Google Authentication Failed',
+        description: 'Unable to connect to Google. Please try again or use email authentication.',
         variant: 'destructive',
       });
     } finally {

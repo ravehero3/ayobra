@@ -23,6 +23,20 @@ export const authService = {
   // Check if Supabase is configured
   isConfigured: () => Boolean(supabase),
 
+  // Debug OAuth configuration
+  debugOAuthConfig: () => {
+    if (typeof window !== 'undefined' && import.meta.env.DEV) {
+      console.log('OAuth Debug Info:', {
+        currentUrl: window.location.origin + window.location.pathname,
+        fullUrl: window.location.href,
+        origin: window.location.origin,
+        hostname: window.location.hostname,
+        protocol: window.location.protocol,
+        supabaseConfigured: Boolean(supabase),
+      });
+    }
+  },
+
   // Backend API auth methods (placeholder - not implemented yet)
   async backendSignUp({ email, password, displayName }: SignUpData) {
     // TODO: Implement backend registration
@@ -119,14 +133,33 @@ export const authService = {
       };
     }
 
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: `${window.location.origin}/`,
-      }
-    });
+    try {
+      // Get the current URL without any query parameters or hash
+      const currentUrl = window.location.origin + window.location.pathname;
+      
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: currentUrl,
+          queryParams: {
+            access_type: 'offline',
+            prompt: 'consent',
+          },
+        }
+      });
 
-    return { data, error };
+      if (error) {
+        console.error('Google OAuth error:', error);
+      }
+
+      return { data, error };
+    } catch (err) {
+      console.error('Google OAuth service error:', err);
+      return {
+        data: null,
+        error: { message: 'Failed to initialize Google OAuth. Please try again.' }
+      };
+    }
   },
 
   // Sign out

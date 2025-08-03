@@ -11,6 +11,11 @@ import { VerifyEmailPage } from "@/pages/verify-email";
 import UserProfile from "@/pages/user-profile";
 import NotFound from "@/pages/not-found";
 
+// Import OAuth debugging in development
+if (import.meta.env.DEV) {
+  import("./lib/oauth-debug");
+}
+
 function Router() {
   return (
     <Switch>
