@@ -1,13 +1,17 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { FolderOpen, Menu, X, User as UserIcon } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button"
 import { useLocation } from "wouter";
-import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
+import { SignedIn, SignedOut, SignInButton, useUser } from "@clerk/clerk-react";
+import { UserIcon } from "@/components/icons/user-icon";
+import { UserProfileModal } from "@/components/auth/user-profile-modal";
 
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  const { user } = useUser();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -62,42 +66,22 @@ export default function Navigation() {
 
           {/* User Menu */}
           <div className="hidden md:flex items-center">
-            <SignedOut>
-              <SignInButton mode="modal">
-                <button className="h-[5vh] w-[5vh] p-0 hover:bg-transparent flex items-center justify-center">
-                  <UserIcon className="h-6 w-6 text-white hover:text-gray-400 transition-colors duration-200" />
-                </button>
-              </SignInButton>
-            </SignedOut>
-            <SignedIn>
-              <UserButton 
-                appearance={{
-                  elements: {
-                    avatarBox: "h-[5vh] w-[5vh] min-h-[32px] min-w-[32px]"
-                  }
-                }}
-              />
-            </SignedIn>
+            <button 
+              onClick={() => setIsProfileModalOpen(true)}
+              className="h-[5vh] p-0 hover:bg-transparent flex items-center justify-center transition-transform duration-200 hover:scale-110"
+            >
+              <UserIcon className="h-[5vh]" />
+            </button>
           </div>
 
           {/* Mobile Icons */}
           <div className="md:hidden flex items-center space-x-3">
-            <SignedOut>
-              <SignInButton mode="modal">
-                <button className="h-[5vh] w-[5vh] p-0 hover:bg-transparent flex items-center justify-center">
-                  <UserIcon className="h-6 w-6 text-white hover:text-gray-400 transition-colors duration-200" />
-                </button>
-              </SignInButton>
-            </SignedOut>
-            <SignedIn>
-              <UserButton 
-                appearance={{
-                  elements: {
-                    avatarBox: "h-[5vh] w-[5vh] min-h-[32px] min-w-[32px]"
-                  }
-                }}
-              />
-            </SignedIn>
+            <button 
+              onClick={() => setIsProfileModalOpen(true)}
+              className="h-[5vh] p-0 hover:bg-transparent flex items-center justify-center transition-transform duration-200 hover:scale-110"
+            >
+              <UserIcon className="h-[5vh]" />
+            </button>
             <button
               className="text-white"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -135,6 +119,12 @@ export default function Navigation() {
           </motion.div>
         )}
       </div>
+
+      {/* User Profile Modal */}
+      <UserProfileModal 
+        isOpen={isProfileModalOpen} 
+        onClose={() => setIsProfileModalOpen(false)} 
+      />
     </motion.nav>
   );
 }
