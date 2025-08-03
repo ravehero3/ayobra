@@ -1,5 +1,6 @@
 import { supabase } from '@/../../shared/supabase';
 import { User, Session } from '@supabase/supabase-js';
+import { apiClient } from './api';
 
 export interface AuthState {
   user: User | null;
@@ -10,6 +11,7 @@ export interface AuthState {
 export interface SignUpData {
   email: string;
   password: string;
+  displayName?: string;
 }
 
 export interface SignInData {
@@ -20,6 +22,51 @@ export interface SignInData {
 export const authService = {
   // Check if Supabase is configured
   isConfigured: () => Boolean(supabase),
+
+  // Backend API auth methods
+  async backendSignUp({ email, password, displayName }: SignUpData) {
+    const result = await apiClient.register({ email, password, displayName });
+    return result;
+  },
+
+  async backendSignIn({ email, password }: SignInData) {
+    const result = await apiClient.login({ email, password });
+    return result;
+  },
+
+  async backendSignOut() {
+    const result = await apiClient.logout();
+    return result;
+  },
+
+  async backendGetProfile() {
+    const result = await apiClient.getProfile();
+    return result;
+  },
+
+  async backendUpdateProfile(updates: { displayName?: string; avatar?: string }) {
+    const result = await apiClient.updateProfile(updates);
+    return result;
+  },
+
+  // Video API methods
+  async getUserVideos() {
+    const result = await apiClient.getUserVideos();
+    return result;
+  },
+
+  async createVideoJob(jobData: { audioUrl: string; imageUrl?: string; settings?: any }) {
+    const result = await apiClient.createVideoJob(jobData);
+    return result;
+  },
+
+  async getVideoStatus(videoId: string) {
+    const result = await apiClient.getVideoStatus(videoId);
+    return result;
+  },
+
+  // Check if user is authenticated with backend
+  isBackendAuthenticated: () => apiClient.isAuthenticated(),
 
   // Sign up with email and password
   async signUp({ email, password }: SignUpData) {
