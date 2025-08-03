@@ -88,7 +88,7 @@ export function UserMenu() {
         onClick={openSignIn}
         className="relative p-2 hover:bg-transparent"
       >
-        <UserIcon className="h-8 w-8 text-white hover:text-gray-400 transition-colors duration-200" />
+        <UserIcon className="h-6 w-6 text-white hover:text-gray-400 transition-colors duration-200" />
       </Button>
 
       <AuthModal
