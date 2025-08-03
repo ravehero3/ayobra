@@ -1,0 +1,98 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Framer-inspired color system */
+  --background: 218, 25%, 10%; /* #0F111A */
+  --foreground: 0, 0%, 100%; /* #FFFFFF */
+  --muted: 220, 20%, 18%; /* #1E2030 */
+  --muted-foreground: 225, 15%, 63%; /* #8A8FAD */
+  --popover: 220, 20%, 18%;
+  --popover-foreground: 0, 0%, 100%;
+  --card: 220, 20%, 18%;
+  --card-foreground: 0, 0%, 100%;
+  --border: 222, 20%, 21%; /* #2A2D44 */
+  --input: 222, 20%, 21%;
+  --primary: 210, 100%, 50%; /* #00AAFF - Framer gradient start */
+  --primary-foreground: 0, 0%, 100%;
+  --secondary: 220, 18%, 20%;
+  --secondary-foreground: 0, 0%, 100%;
+  --accent: 210, 100%, 50%;
+  --accent-foreground: 0, 0%, 100%;
+  --destructive: 0, 84.2%, 60.2%;
+  --destructive-foreground: 60, 9.1%, 97.8%;
+  --ring: 210, 100%, 50%;
+  --radius: 0.75rem; /* Framer's preferred radius */
+  
+  /* Legacy Framer color palette for direct usage */
+  --framer-background: #0F111A;
+  --framer-surface: #1E2030;
+  --framer-muted: #8A8FAD;
+  --framer-text: #FFFFFF;
+  --framer-border: #2A2D44;
+  --framer-gradient-start: #00AAFF;
+  --framer-gradient-end: #0055FF;
+}
+
+.dark {
+  /* Same as root since we're using Framer's dark theme by default */
+  --background: 218, 25%, 10%;
+  --foreground: 0, 0%, 100%;
+  --muted: 220, 20%, 18%;
+  --muted-foreground: 225, 15%, 63%;
+  --popover: 220, 20%, 18%;
+  --popover-foreground: 0, 0%, 100%;
+  --card: 220, 20%, 18%;
+  --card-foreground: 0, 0%, 100%;
+  --border: 222, 20%, 21%;
+  --input: 222, 20%, 21%;
+  --primary: 210, 100%, 50%;
+  --primary-foreground: 0, 0%, 100%;
+  --secondary: 220, 18%, 20%;
+  --secondary-foreground: 0, 0%, 100%;
+  --accent: 210, 100%, 50%;
+  --accent-foreground: 0, 0%, 100%;
+  --destructive: 0, 62.8%, 30.6%;
+  --destructive-foreground: 0, 0%, 98%;
+  --ring: 210, 100%, 50%;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased;
+    background-color: var(--framer-background);
+    color: var(--framer-text);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer utilities {
+  .glassmorphism {
+    background: var(--framer-surface);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--framer-border);
+  }
+  
+  .text-gradient {
+    background: linear-gradient(135deg, var(--framer-gradient-start) 0%, var(--framer-gradient-end) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .bg-framer-gradient {
+    background: linear-gradient(135deg, var(--framer-gradient-start) 0%, var(--framer-gradient-end) 100%);
+  }
+  
+  .bg-framer-gradient-hover {
+    background: linear-gradient(135deg, #1AB6FF 0%, #1060FF 100%);
+  }
+}
