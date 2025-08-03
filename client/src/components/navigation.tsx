@@ -65,11 +65,7 @@ export default function Navigation() {
             <SignedOut>
               <SignInButton mode="modal">
                 <button className="h-8 w-8 p-0 hover:bg-transparent">
-                  <img 
-                    src="/attached_assets/user_1754238104631.png" 
-                    alt="User"
-                    className="h-8 w-8 brightness-0 invert hover:brightness-75 transition-all duration-200"
-                  />
+                  <UserIcon className="h-8 w-8 text-white hover:text-gray-400 transition-colors duration-200" />
                 </button>
               </SignInButton>
             </SignedOut>
@@ -89,11 +85,7 @@ export default function Navigation() {
             <SignedOut>
               <SignInButton mode="modal">
                 <button className="h-8 w-8 p-0 hover:bg-transparent">
-                  <img 
-                    src="/attached_assets/user_1754238104631.png" 
-                    alt="User"
-                    className="h-8 w-8 brightness-0 invert hover:brightness-75 transition-all duration-200"
-                  />
+                  <UserIcon className="h-8 w-8 text-white hover:text-gray-400 transition-colors duration-200" />
                 </button>
               </SignInButton>
             </SignedOut>

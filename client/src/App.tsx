@@ -39,7 +39,16 @@ function Router() {
 
 function App() {
   return (
-    <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
+    <ClerkProvider 
+      publishableKey={PUBLISHABLE_KEY}
+      appearance={{
+        baseTheme: "dark",
+        elements: {
+          formButtonPrimary: "bg-blue-600 hover:bg-blue-700",
+          card: "bg-gray-900 border-gray-700"
+        }
+      }}
+    >
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
           <div className="dark">
