@@ -53,18 +53,18 @@ export default function Footer() {
               <div className="w-8 h-8 bg-framer-gradient rounded-lg flex items-center justify-center">
                 <FolderOpen className="w-5 h-5 text-white" />
               </div>
-              <span className="text-xl font-bold">TypeBeat Studio</span>
+              <span className="text-xl font-bold">Voodoo808</span>
             </div>
             <p className="text-framer-muted mb-4">
-              The ultimate desktop app for creating professional type beat videos.
+              The ultimate desktop app for creating professional beat videos.
             </p>
             <a
-              href="mailto:support@typebeatstudio.com"
+              href="mailto:app@voodoo808.com"
               className="text-framer-gradient-start hover:text-framer-gradient-end transition-colors flex items-center space-x-2"
               data-testid="contact-email"
             >
               <Mail className="w-4 h-4" />
-              <span>typebeatz@voodoo808.com</span>
+              <span>app@voodoo808.com</span>
             </a>
           </motion.div>
 
@@ -102,7 +102,7 @@ export default function Footer() {
           className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-[hsl(0,0%,16%)]"
         >
           <p className="text-[hsl(0,0%,62.7%)] mb-4 md:mb-0">
-            © 2024 TypeBeat Studio. All rights reserved.
+            © 2024 Voodoo808. All rights reserved.
           </p>
           <div className="flex space-x-6">
             {socialLinks.map((social) => (

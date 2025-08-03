@@ -20,7 +20,7 @@ export default function Hero() {
           className="text-5xl md:text-7xl font-bold mb-6 leading-tight"
         >
           Create Professional<br />
-          <span className="text-gradient">Type Beat Videos</span><br />
+          <span className="text-gradient">Beat Videos</span><br />
           in Minutes
         </motion.h1>
 
@@ -30,7 +30,7 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="text-xl md:text-2xl text-framer-muted mb-12 max-w-3xl mx-auto leading-relaxed"
         >
-          The ultimate desktop app for music producers. Drag, drop, and generate stunning type beat videos with waveform visualization and custom layouts.
+          The ultimate desktop app for music producers. Drag, drop, and generate stunning beat videos with professional waveform visualization and custom layouts.
         </motion.p>
 
         {/* Download Buttons */}
@@ -68,7 +68,7 @@ export default function Hero() {
         >
           <img
             src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1200&h=800"
-            alt="TypeBeat Studio app interface showing drag-and-drop audio and image pairing"
+            alt="Voodoo808 Studio app interface showing drag-and-drop audio and image pairing"
             className="rounded-2xl shadow-2xl mx-auto border border-framer-border"
             data-testid="app-preview-image"
           />

@@ -1,13 +1,13 @@
-# TypeBeat Video Generator - Replit.md
+# Voodoo808 Beat Video Creator - Replit.md
 
 ## Overview
 
-This is a clean marketing landing page for TypeBeatz, designed to showcase the desktop application for creating type beat videos. The landing page features a modern React frontend with a dark glassmorphism theme, an Express.js backend for serving static content, and a fully functional Supabase authentication system. It's focused on marketing and branding with secure user account management.
+This is a professional marketing landing page for Voodoo808, designed to showcase the desktop application for creating beat videos. The landing page features a modern React frontend with a dark glassmorphism theme, an Express.js backend for serving static content, and a fully functional Supabase authentication system with Google OAuth integration. It's focused on marketing and branding with secure user account management, ready for deployment to app.voodoo808.com.
 
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
-Project focus: Clean marketing landing page with Supabase authentication - no video generation functionality.
+Project focus: Professional marketing landing page for Voodoo808 brand with Supabase authentication and Google OAuth integration - ready for app.voodoo808.com deployment.
 
 ## System Architecture
 
