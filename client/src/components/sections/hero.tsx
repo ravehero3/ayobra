@@ -67,7 +67,7 @@ export default function Hero() {
           className="relative"
         >
           <img
-            src="/app-screenshot.png"
+            src="/app-space-preview.jpg"
             alt="Type Beatz PRO interface showing professional beat video creation"
             className="rounded-2xl shadow-2xl mx-auto"
             data-testid="app-preview-image"
