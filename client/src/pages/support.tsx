@@ -30,10 +30,10 @@ export default function Support() {
               <h2 className="text-xl font-semibold mb-3">Email Support</h2>
               <p className="text-framer-muted mb-4">Get help directly from our team. PRO users receive priority support.</p>
               <a 
-                href="mailto:app@voodoo808.com" 
+                href="mailto:www@voodoo808.com" 
                 className="text-framer-gradient-start hover:text-framer-gradient-end font-medium"
               >
-                app@voodoo808.com
+                www@voodoo808.com
               </a>
             </motion.div>
 

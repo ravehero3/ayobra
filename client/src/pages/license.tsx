@@ -65,7 +65,7 @@ export default function License() {
 
             <section>
               <h2 className="text-2xl font-semibold mb-4">Contact</h2>
-              <p>License questions? Email <a href="mailto:app@voodoo808.com" className="text-framer-gradient-start">app@voodoo808.com</a></p>
+              <p>License questions? Email <a href="mailto:www@voodoo808.com" className="text-framer-gradient-start">www@voodoo808.com</a></p>
             </section>
           </div>
         </motion.div>

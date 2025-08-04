@@ -54,7 +54,7 @@ export default function Refund() {
 
             <section>
               <h2 className="text-2xl font-semibold mb-4">Contact for Refunds</h2>
-              <p>Email <a href="mailto:app@voodoo808.com" className="text-framer-gradient-start">app@voodoo808.com</a> with subject line "Refund Request" for fastest processing.</p>
+              <p>Email <a href="mailto:www@voodoo808.com" className="text-framer-gradient-start">www@voodoo808.com</a> with subject line "Refund Request" for fastest processing.</p>
             </section>
           </div>
         </motion.div>

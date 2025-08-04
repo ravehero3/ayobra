@@ -57,12 +57,12 @@ export default function Privacy() {
 
             <section>
               <h2 className="text-2xl font-semibold mb-4">Your Rights</h2>
-              <p>You have the right to access, modify, or delete your personal data. Contact us at <a href="mailto:app@voodoo808.com" className="text-framer-gradient-start">app@voodoo808.com</a> for any requests.</p>
+              <p>You have the right to access, modify, or delete your personal data. Contact us at <a href="mailto:www@voodoo808.com" className="text-framer-gradient-start">www@voodoo808.com</a> for any requests.</p>
             </section>
 
             <section>
               <h2 className="text-2xl font-semibold mb-4">Contact</h2>
-              <p>For any privacy-related questions, email us at <a href="mailto:app@voodoo808.com" className="text-framer-gradient-start">app@voodoo808.com</a>.</p>
+              <p>For any privacy-related questions, email us at <a href="mailto:www@voodoo808.com" className="text-framer-gradient-start">www@voodoo808.com</a>.</p>
             </section>
           </div>
         </motion.div>

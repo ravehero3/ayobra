@@ -17,7 +17,7 @@ export default function Contact() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const mailtoLink = `mailto:app@voodoo808.com?subject=${encodeURIComponent(formData.subject)}&body=${encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`)}`;
+    const mailtoLink = `mailto:www@voodoo808.com?subject=${encodeURIComponent(formData.subject)}&body=${encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`)}`;
     window.location.href = mailtoLink;
   };
 
@@ -127,7 +127,7 @@ export default function Contact() {
                   <Mail className="w-6 h-6 text-framer-gradient-start mt-1" />
                   <div>
                     <h3 className="font-medium mb-1">Email</h3>
-                    <p className="text-framer-muted">app@voodoo808.com</p>
+                    <p className="text-framer-muted">www@voodoo808.com</p>
                     <p className="text-sm text-framer-muted">We typically respond within 24 hours</p>
                   </div>
                 </div>

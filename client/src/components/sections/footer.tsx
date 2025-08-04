@@ -58,12 +58,12 @@ export default function Footer() {
               The ultimate desktop app for creating professional beat videos.
             </p>
             <a
-              href="mailto:app@voodoo808.com"
+              href="mailto:www@voodoo808.com"
               className="text-framer-gradient-start hover:text-framer-gradient-end transition-colors flex items-center space-x-2"
               data-testid="contact-email"
             >
               <Mail className="w-4 h-4" />
-              <span>app@voodoo808.com</span>
+              <span>www@voodoo808.com</span>
             </a>
           </motion.div>
 
