@@ -67,12 +67,11 @@ export default function Hero() {
           className="relative"
         >
           <img
-            src="/app-screenshot.png"
+            src="/app-space-preview.jpg"
             alt="Type Beatz PRO interface showing professional beat video creation"
-            className="rounded-2xl shadow-2xl mx-auto border border-framer-border"
+            className="rounded-2xl shadow-2xl mx-auto"
             data-testid="app-preview-image"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[var(--framer-background)] via-transparent to-transparent rounded-2xl"></div>
         </motion.div>
       </div>
     </section>

@@ -12,7 +12,7 @@ export default function Home() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="min-h-screen bg-[hsl(0,0%,4%)] text-white"
+      className="min-h-screen bg-black text-white"
     >
       <Navigation />
       <Hero />
