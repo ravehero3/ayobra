@@ -36,7 +36,6 @@ function App() {
       publishableKey={PUBLISHABLE_KEY}
       afterSignOutUrl="/"
       appearance={{
-        baseTheme: "dark",
         elements: {
           formButtonPrimary: "bg-blue-600 hover:bg-blue-700",
           card: "bg-gray-900 border-gray-700"
