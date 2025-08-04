@@ -1,0 +1,180 @@
+Absolutely. Here’s a **complete Replit-ready task prompt** you can drop into your project or give to whoever’s implementing it. It makes all footer links work, populates the required content (so Paddle domain review passes), and integrates the Paddle checkout.
+
+---
+
+## **Title**
+
+Make footer links functional, add required policy pages, and integrate Paddle checkout for Type Beatz PRO
+
+## **Description / Instructions**
+
+We need to fully implement all footer links on `https://typebeatz.voodoo808.com`, populate each target page with the correct content (legal, support, docs, etc.), and integrate the Paddle PRO checkout for the \$79 one-time license so Paddle domain review passes. Do the following tasks:
+
+---
+
+### 1. **Routing & Navigation**
+
+* Ensure every footer link is a working route in the React app (SPA or separate pages):
+
+  * Product (scrolls/promotes main product section)
+  * Features (anchors to features)
+  * Pricing (pricing section)
+  * Download (links to download area or triggers OS-specific download)
+  * Changelog (`/changelog`)
+  * Support (`/support`)
+  * Documentation (`/docs`)
+  * Tutorials (`/tutorials`)
+  * Contact (`/contact`)
+  * Discord (external link to Discord invite)
+  * Legal group:
+
+    * Privacy Policy (`/privacy`)
+    * Terms & Conditions (`/terms`)
+    * Refund Policy (`/refund`)
+    * License Agreement (`/license`)
+    * EULA (`/eula`)
+
+---
+
+### 2. **Content to Populate Each Page**
+
+#### **Privacy Policy** (`/privacy`)
+
+Include:
+
+* Who we are (Voodoo808, OSVČ with IČO: \[insert actual IČO])
+* What data we collect: email (for contact/purchases), usage analytics (if any), Paddle purchase data, authentication/session info if applicable.
+* How we use it (order fulfillment, support, product improvements, security).
+* Third parties: Paddle (payments, receipts), optional analytics (list if used), hosting, email handles.
+* Cookies and local storage explanation.
+* User rights (access, deletion, contact).
+* Contact method: [app@voodoo808.com](mailto:app@voodoo808.com).
+
+#### **Terms & Conditions** (`/terms`)
+
+Include:
+
+* Legal seller identity (full name / OSVČ + IČO).
+* Product description (Type Beatz desktop app).
+* Purchase terms (one-time \$79 PRO license, what’s included).
+* License grant (non-transferable, personal use, no redistribution).
+* Limitations of liability / disclaimers.
+* Refund policy reference (link).
+* Support scope.
+* Governing law (Czechia or your chosen jurisdiction).
+* Contact info.
+
+#### **Refund Policy** (`/refund`)
+
+Include:
+
+* Clear statement: e.g., “30-day money-back guarantee. If you're not satisfied with Type Beatz PRO, email [app@voodoo808.com](mailto:app@voodoo808.com) with your purchase info for a refund.” (Adjust timeframe if different.)
+* What’s required to qualify (proof of purchase, no abuse, etc.).
+* Approximate processing time.
+* That Paddle processes the payment and refunds will go through their system.
+
+#### **License Agreement** (`/license`)
+
+* Specifics of what the PRO license covers (lifetime access, updates for X period, non-commercial/commercial use if applicable).
+* Restrictions (no resale, no modification for redistribution).
+* Revocation clauses (fraud, abuse).
+
+#### **EULA** (`/eula`)
+
+* End User License Agreement in more legal form: installation rights, no reverse engineering, updates, termination, disclaimers of warranty, user obligations.
+
+#### **Changelog** (`/changelog`)
+
+* List of versions with dates and bullet points of changes. If no history yet, put:
+
+  * “v1.0.0 – Initial public PRO release: unlimited video generation, 4K export, batch processing, cloud sync, priority support.”
+
+#### **Support** (`/support`)
+
+* Instructions: how to get help (email [app@voodoo808.com](mailto:app@voodoo808.com), Discord link).
+* FAQ highlights: download after purchase, license activation, refund process, system requirements.
+
+#### **Documentation** (`/docs`)
+
+* Placeholder structure: Installation, Getting Started, PRO features, Exporting, Troubleshooting.
+* Link to actual guides or markdown sections; can be minimal stub for review.
+
+#### **Tutorials** (`/tutorials`)
+
+* Embed or link to YouTube videos (e.g., “How to make a beat video”, “PRO workflow”, etc.).
+* If none yet, add “Coming soon” plus a signup or subscribe call-to-action.
+
+#### **Contact** (`/contact`)
+
+* Simple form or mailto: to [app@voodoo808.com](mailto:app@voodoo808.com).
+* Include subject suggestions: “Support”, “Partnership”, “Feedback”.
+
+---
+
+### 3. **Paddle Checkout Integration**
+
+* Embed the Paddle checkout for the **PRO \$79 one-time license**:
+
+  * Use Paddle’s official checkout script with the correct product ID.
+  * Place “Upgrade to PRO” / “Buy PRO” button(s) linking to that checkout.
+  * On success redirect to a thank-you page (`/thank-you`) with:
+
+    * Confirmation message.
+    * Instructions or download link (or “check your email” if delivering via email).
+* Implement a **webhook endpoint** (can be a stub initially) to receive Paddle purchase events (e.g., `/api/webhooks/paddle`) for future automation (license activation, logging, etc.).
+* Store minimal purchase metadata client/server-side if needed (for future user history sync).
+
+---
+
+### 4. **Visual / Trust Signals**
+
+* Display your **legal identity** somewhere in footer or small note:
+  `Type Beatz is a product of Voodoo808 (OSVČ, IČO: XXXXXXXX)`
+* Show “What’s included with PRO” bullets near the checkout button so reviewers instantly see deliverables.
+* Ensure the PRO price is clearly shown as “\$79 one-time” on the pricing section and checkout trigger.
+
+---
+
+### 5. **Technical & Compliance**
+
+* All policy & legal pages must be reachable via navigation (footer) from every page.
+* Ensure the site is fully HTTPS and there are no broken links.
+* Capture a screenshot of:
+
+  * Pricing section with \$79 PRO.
+  * Visible navigation including Privacy, Terms, Refund.
+  * Checkout button visible (can be sandbox mode) for Paddle’s review if asked.
+
+---
+
+### 6. **Deliverables / Checklist for Completion**
+
+* [ ] Functional React routes for all footer links.
+* [ ] Privacy Policy, Terms, Refund, License, EULA pages live with content above.
+* [ ] Changelog, Support, Docs, Tutorials, Contact pages functional.
+* [ ] Paddle checkout embedded and working (sandbox test).
+* [ ] Thank-you / post-purchase flow implemented.
+* [ ] Webhook endpoint stub in backend (log receipt of Paddle events).
+* [ ] Legal identity displayed.
+* [ ] Screenshots prepared for Paddle review.
+
+---
+
+### 7. **Optional Enhancements (nice to have)**
+
+* Email capture to notify on updates.
+* License key display / activation logic after purchase (future automation).
+* “Verified secure checkout by Paddle” badge near buy button.
+
+---
+
+**Credentials / Inputs to Supply:**
+
+* Paddle product ID for the PRO license.
+* Paddle checkout script snippet (from dashboard).
+* Your IČO and full legal name.
+* Download links or delivery mechanism for Mac/Windows builds.
+
+---
+
+Would you like me to generate the exact boilerplate Markdown/React components for the Terms, Privacy Policy, Refund Policy, EULA, and support page so you can paste them directly into the project?
