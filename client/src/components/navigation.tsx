@@ -5,15 +5,11 @@ import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button"
 import { useLocation } from "wouter";
 // Removed SignedIn, SignedOut imports - using custom useAuth instead
-import { UserIcon } from "@/components/icons/user-icon";
-import { UserProfileModal } from "@/components/auth/user-profile-modal";
-import { useAuth } from "@/hooks/use-auth";
+// Removed user authentication imports - no longer needed
 
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
-  const { user, loading } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -66,26 +62,10 @@ export default function Navigation() {
             </button>
           </div>
 
-          {/* User Menu */}
-          <div className="hidden md:flex items-center">
-            <button 
-              onClick={() => setIsProfileModalOpen(true)}
-              className="group p-1 hover:bg-transparent flex items-center justify-center transition-transform duration-200 hover:scale-110"
-              title={user ? 'View Profile' : 'Sign In'}
-            >
-              <UserIcon className={`h-7 w-7 ${user ? 'opacity-100' : 'opacity-80'}`} />
-            </button>
-          </div>
+          {/* Removed User Menu - no authentication needed */}
 
           {/* Mobile Icons */}
-          <div className="md:hidden flex items-center space-x-3">
-            <button 
-              onClick={() => setIsProfileModalOpen(true)}
-              className="group p-1 hover:bg-transparent flex items-center justify-center transition-transform duration-200 hover:scale-110"
-              title={user ? 'View Profile' : 'Sign In'}
-            >
-              <UserIcon className={`h-7 w-7 ${user ? 'opacity-100' : 'opacity-80'}`} />
-            </button>
+          <div className="md:hidden flex items-center">
             <button
               className="text-white"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -124,11 +104,7 @@ export default function Navigation() {
         )}
       </div>
 
-      {/* User Profile Modal */}
-      <UserProfileModal 
-        isOpen={isProfileModalOpen} 
-        onClose={() => setIsProfileModalOpen(false)} 
-      />
+      {/* Removed User Profile Modal - no authentication needed */}
     </motion.nav>
   );
 }
