@@ -20,7 +20,7 @@ export default function Hero() {
           className="font-bold mb-2 leading-tight text-white"
           style={{ 
             fontSize: '72px',
-            letterSpacing: '-0.1em',
+            letterSpacing: '-0.08em',
             fontFamily: 'Inter, sans-serif'
           }}
         >
