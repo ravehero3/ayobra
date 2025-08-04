@@ -19,8 +19,8 @@ export default function Hero() {
           transition={{ duration: 0.8 }}
           className="font-bold mb-6 leading-tight"
           style={{ 
-            fontSize: '85px',
-            letterSpacing: '-0.05em',
+            fontSize: '72px',
+            letterSpacing: '-0.1em',
             fontFamily: 'Inter, sans-serif'
           }}
         >
@@ -35,8 +35,8 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="mb-12 max-w-3xl mx-auto leading-relaxed"
           style={{ 
-            fontSize: '24px',
-            letterSpacing: '0.05em',
+            fontSize: '20px',
+            letterSpacing: '-0.02em',
             color: '#999999',
             fontFamily: 'Inter, sans-serif'
           }}
