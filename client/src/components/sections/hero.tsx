@@ -17,7 +17,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="font-bold mb-6 leading-tight"
+          className="font-bold mb-2 leading-tight text-white"
           style={{ 
             fontSize: '72px',
             letterSpacing: '-0.1em',
@@ -25,7 +25,7 @@ export default function Hero() {
           }}
         >
           Batch generate<br />
-          <span className="text-gradient">type beat videos</span><br />
+          type beat videos<br />
           in one click
         </motion.h1>
 
@@ -54,7 +54,7 @@ export default function Hero() {
         >
           <Button
             size="sm"
-            className="bg-framer-gradient hover:bg-framer-gradient-hover text-white px-6 py-3 text-sm font-semibold transition-all transform hover:scale-105 rounded-full shadow-lg"
+            className="bg-white hover:bg-gray-100 text-black px-6 py-3 text-sm font-semibold transition-all transform hover:scale-105 rounded-full shadow-lg"
             data-testid="download-mac"
           >
             <Download className="w-4 h-4 mr-2" />
