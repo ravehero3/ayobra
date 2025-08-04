@@ -20,7 +20,7 @@ export default function Hero() {
           className="font-bold mb-4 text-white"
           style={{ 
             fontSize: '72px',
-            letterSpacing: '-0.08em',
+            letterSpacing: '-0.04em',
             fontFamily: 'Inter, sans-serif',
             lineHeight: '0.9'
           }}
@@ -79,12 +79,14 @@ export default function Hero() {
           transition={{ duration: 1, delay: 0.6 }}
           className="relative"
         >
-          <img
-            src="/hero-app-image.jpg"
-            alt="Type Beatz PRO app floating in space - professional beat video creation"
-            className="rounded-2xl shadow-2xl mx-auto border border-framer-border"
-            data-testid="app-preview-image"
-          />
+          <div className="relative p-4 rounded-3xl glassmorphism">
+            <img
+              src="/hero-app-image.jpg"
+              alt="Type Beatz PRO app floating in space - professional beat video creation"
+              className="rounded-2xl shadow-2xl mx-auto"
+              data-testid="app-preview-image"
+            />
+          </div>
         </motion.div>
       </div>
     </section>
