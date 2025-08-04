@@ -17,11 +17,12 @@ export default function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="font-bold mb-2 leading-tight text-white"
+          className="font-bold mb-4 text-white"
           style={{ 
             fontSize: '72px',
             letterSpacing: '-0.08em',
-            fontFamily: 'Inter, sans-serif'
+            fontFamily: 'Inter, sans-serif',
+            lineHeight: '0.9'
           }}
         >
           Batch generate<br />
@@ -33,12 +34,13 @@ export default function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="mb-12 max-w-3xl mx-auto leading-relaxed"
+          className="mb-12 max-w-3xl mx-auto"
           style={{ 
             fontSize: '20px',
             letterSpacing: '-0.02em',
             color: '#999999',
-            fontFamily: 'Inter, sans-serif'
+            fontFamily: 'Inter, sans-serif',
+            lineHeight: '1.2'
           }}
         >
           The time saving tool loved by beat makers.
