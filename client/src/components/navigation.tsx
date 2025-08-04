@@ -48,14 +48,16 @@ export default function Navigation() {
           <div className="hidden md:flex items-center space-x-8 absolute left-1/2 transform -translate-x-1/2">
             <button
               onClick={() => scrollToSection("features")}
-              className="text-framer-muted hover:text-framer-text transition-colors"
+              className="hover:text-framer-text transition-colors"
+              style={{ color: '#999999' }}
               data-testid="nav-features"
             >
               Features
             </button>
             <button
               onClick={() => scrollToSection("pricing")}
-              className="text-framer-muted hover:text-framer-text transition-colors"
+              className="hover:text-framer-text transition-colors"
+              style={{ color: '#999999' }}
               data-testid="nav-pricing"
             >
               Pricing

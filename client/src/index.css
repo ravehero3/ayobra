@@ -24,7 +24,7 @@
   --destructive-foreground: 60, 9.1%, 97.8%;
   --ring: 210, 100%, 50%;
   --radius: 0.75rem; /* Framer's preferred radius */
-  
+
   /* Legacy Framer color palette for direct usage */
   --framer-background: #0F111A;
   --framer-surface: #1E2030;
@@ -67,6 +67,7 @@
     @apply font-sans antialiased;
     background-color: var(--framer-background);
     color: var(--framer-text);
+    font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
   }
 
   html {
@@ -80,18 +81,18 @@
     backdrop-filter: blur(20px);
     border: 1px solid var(--framer-border);
   }
-  
+
   .text-gradient {
     background: linear-gradient(135deg, var(--framer-gradient-start) 0%, var(--framer-gradient-end) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
-  
+
   .bg-framer-gradient {
     background: linear-gradient(135deg, var(--framer-gradient-start) 0%, var(--framer-gradient-end) 100%);
   }
-  
+
   .bg-framer-gradient-hover {
     background: linear-gradient(135deg, #1AB6FF 0%, #1060FF 100%);
   }

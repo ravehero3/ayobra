@@ -17,20 +17,31 @@ export default function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="text-5xl md:text-7xl font-bold mb-6 leading-tight"
+          className="font-bold mb-6 leading-tight"
+          style={{ 
+            fontSize: '85px',
+            letterSpacing: '-50px',
+            fontFamily: 'Inter, sans-serif'
+          }}
         >
-          Create Professional<br />
-          <span className="text-gradient">Beat Videos</span><br />
-          in Minutes
+          Batch generate<br />
+          <span className="text-gradient">type beat videos</span><br />
+          in one click
         </motion.h1>
 
         <motion.p
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-xl md:text-2xl text-framer-muted mb-12 max-w-3xl mx-auto leading-relaxed"
+          className="mb-12 max-w-3xl mx-auto leading-relaxed"
+          style={{ 
+            fontSize: '24px',
+            letterSpacing: '50px',
+            color: '#999999',
+            fontFamily: 'Inter, sans-serif'
+          }}
         >
-          The ultimate desktop app for music producers. Drag, drop, and instantly generate stunning beat videos with professional waveform visualization, custom layouts, and export-ready quality for YouTube, Instagram, and TikTok.
+          The time saving tool loved by beat makers.
         </motion.p>
 
         {/* Download Buttons */}
