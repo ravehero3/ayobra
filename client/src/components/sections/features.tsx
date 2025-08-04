@@ -21,13 +21,13 @@ const features = [
 
 const featureImages = [
   {
-    src: "@assets/the world is yours_1754313372269.jpg",
+    src: "/world-image.jpg",
     alt: "Professional music production workspace",
     title: "Smart Audio Processing",
     description: "Advanced waveform analysis with real-time playback and precise audio positioning for perfect video synchronization."
   },
   {
-    src: "@assets/3tfipyGbY74TjEyvBjUyagtSpI_1754313362951.mp4",
+    src: "/beat-video.mp4",
     alt: "Beat video creation in action",
     title: "Concurrent Processing",
     description: "Generate multiple videos simultaneously with real-time progress tracking and instant cancellation capabilities."

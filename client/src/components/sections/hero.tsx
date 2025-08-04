@@ -8,7 +8,7 @@ export default function Hero() {
       {/* Background Image */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-30"
-        style={{ backgroundImage: 'url(@assets/the world is yours_1754313372269.jpg)' }}
+        style={{ backgroundImage: 'url(/world-image.jpg)' }}
       ></div>
       
       {/* Content */}
@@ -67,7 +67,7 @@ export default function Hero() {
           className="relative"
         >
           <img
-            src="@assets/Snímek obrazovky 2025-07-09 v 9.58.51_1754313382760.png"
+            src="/app-screenshot.png"
             alt="Type Beatz PRO interface showing professional beat video creation"
             className="rounded-2xl shadow-2xl mx-auto border border-framer-border"
             data-testid="app-preview-image"
