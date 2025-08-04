@@ -5,17 +5,17 @@ const features = [
   {
     icon: MousePointer,
     title: "Drag & Drop Interface",
-    description: "Simply drag your audio files and images into the app. Our smart pairing algorithm automatically matches them for optimal results."
+    description: "Drop in your audio and image files. Type Beatz auto-pairs them and sets up your video in seconds."
   },
   {
     icon: Music,
     title: "Waveform Visualization",
-    description: "Real-time waveform preview with playback controls. See exactly how your audio will look in the final video before generating."
+    description: "Real-time waveform preview with playback controls so you see exactly how your video will look before exporting."
   },
   {
     icon: Video,
-    title: "HD Video Generation",
-    description: "Generate 1920x1080 MP4 videos with high-quality AAC audio. Professional output ready for YouTube and social media."
+    title: "HD & 4K Video Generation",
+    description: "Generate MP4 videos in 1080p or 4K, ready to upload to YouTube or share on social media."
   }
 ];
 

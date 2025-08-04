@@ -30,7 +30,7 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="text-xl md:text-2xl text-framer-muted mb-12 max-w-3xl mx-auto leading-relaxed"
         >
-          The ultimate desktop app for music producers. Drag, drop, and generate stunning beat videos with professional waveform visualization and custom layouts.
+          The ultimate desktop app for music producers. Drag, drop, and instantly generate stunning beat videos with professional waveform visualization, custom layouts, and export-ready quality for YouTube, Instagram, and TikTok.
         </motion.p>
 
         {/* Download Buttons */}

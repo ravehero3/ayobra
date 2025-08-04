@@ -2,10 +2,11 @@ import { motion } from "framer-motion";
 import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const tiers = [
+const pricingTiers = [
   {
     name: "Free",
     price: "$0",
+    period: "forever",
     description: "Perfect for getting started",
     features: [
       "5 videos per month",
@@ -13,21 +14,22 @@ const tiers = [
       "Basic templates",
       "Community support"
     ],
-    cta: "Get Started Free",
+    cta: "Download Free",
     popular: false
   },
   {
     name: "PRO",
-    price: "$29",
-    period: "/month",
+    price: "$79",
+    period: "lifetime license",
     description: "For serious producers",
     features: [
       "Unlimited videos",
       "4K export quality",
       "Premium templates",
       "Batch processing",
-      "Priority support",
-      "Cloud sync"
+      "Priority email support",
+      "Cloud sync",
+      "Free updates for 1 year"
     ],
     cta: "Upgrade to PRO",
     popular: true
@@ -50,7 +52,7 @@ export default function Pricing() {
         </motion.div>
 
         <div className="grid md:grid-cols-2 gap-8">
-          {tiers.map((tier, index) => (
+          {pricingTiers.map((tier, index) => (
             <motion.div
               key={tier.name}
               initial={{ opacity: 0, y: 30 }}

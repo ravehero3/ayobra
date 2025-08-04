@@ -16,17 +16,18 @@ const footerSections = [
     links: [
       { name: "Documentation", href: "#" },
       { name: "Tutorials", href: "#" },
-      { name: "Contact", href: "#" },
+      { name: "Contact", href: "mailto:app@voodoo808.com" },
       { name: "Discord", href: "#" }
     ]
   },
   {
     title: "Legal",
     links: [
-      { name: "Privacy Policy", href: "#" },
-      { name: "Terms of Service", href: "#" },
-      { name: "License", href: "#" },
-      { name: "EULA", href: "#" }
+      { name: "Privacy Policy", href: "/privacy" },
+      { name: "Terms & Conditions", href: "/terms" },
+      { name: "Refund Policy", href: "/refund" },
+      { name: "License Agreement", href: "/license" },
+      { name: "EULA", href: "/eula" }
     ]
   }
 ];

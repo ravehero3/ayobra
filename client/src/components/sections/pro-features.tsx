@@ -45,9 +45,9 @@ export default function ProFeatures() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">Unlock PRO Features</h2>
+          <h2 className="text-4xl md:text-5xl font-bold mb-4">Everything You Need</h2>
           <p className="text-xl text-[hsl(0,0%,62.7%)] max-w-2xl mx-auto">
-            Take your type beat video production to the next level with advanced tools and unlimited processing.
+            Powerful features to turn your beats into high-quality videos — fast.
           </p>
         </motion.div>
 
