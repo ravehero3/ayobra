@@ -1,0 +1,108 @@
+Here’s the **Replit-ready implementation prompt** you can paste directly into your project so it creates the Terms of Service, Privacy Policy, and Refund Policy pages you need for Paddle domain approval — and verifies they’re working before giving you the final URLs to submit.
+
+---
+
+## **Prompt for Replit**
+
+**Title:**
+Create and verify Terms, Privacy, and Refund policy pages for Paddle domain review
+
+**Description / Steps:**
+
+We need to create 3 working pages on the landing page `https://typebeatz.voodoo808.com` so Paddle can verify our domain:
+
+1. Terms of Service
+2. Privacy Policy
+3. Refund Policy
+
+All must be **accessible via HTTPS** and **linked in the footer**. After creation, Replit should test the pages, confirm HTTP 200 OK status, and return the working URLs so they can be pasted into Paddle’s dashboard.
+
+---
+
+### **Step 1 – Create Pages**
+
+* Add **Terms of Service** route: `/terms-of-service`
+  Include:
+
+  * Legal business name (Voodoo808, OSVČ, IČO: XXXXXXXX)
+  * Description of product (Type Beatz desktop app, macOS + Windows)
+  * Purchase/license terms (PRO \$79 one-time, what’s included)
+  * Restrictions (no resale, no redistribution, etc.)
+  * Liability disclaimer, governing law, contact info
+
+* Add **Privacy Policy** route: `/privacy-policy`
+  Include:
+
+  * Data collected: email (support/purchases), Paddle transaction info, cookies, analytics (if used)
+  * How data is used and stored
+  * Third-party processors: Paddle, hosting provider, analytics tools (if any)
+  * User rights (access, deletion) and contact email
+
+* Add **Refund Policy** route: `/refund-policy`
+  Include:
+
+  * Refund eligibility (e.g., 30 days from purchase, no abuse, must have proof of purchase)
+  * How to request: email [app@voodoo808.com](mailto:app@voodoo808.com)
+  * Processing time and method (refund via Paddle)
+
+---
+
+### **Step 2 – Footer Links**
+
+* In the footer, ensure these are linked:
+
+  * “Terms & Conditions” → `/terms-of-service`
+  * “Privacy Policy” → `/privacy-policy`
+  * “Refund Policy” → `/refund-policy`
+
+---
+
+### **Step 3 – Pricing Page**
+
+* Make sure `/pricing` exists or a section on the homepage clearly shows:
+
+  * \$79 PRO one-time
+  * What’s included in PRO purchase (deliverables)
+  * Paddle checkout button (sandbox mode for now)
+
+---
+
+### **Step 4 – Verification & Troubleshooting**
+
+After implementing, Replit should:
+
+1. Start local or deployed build
+2. Automatically check all 3 policy page URLs for:
+
+   * ✅ HTTP 200 status
+   * ✅ Contains at least 300 characters of real text
+   * ✅ Visible from public web (no login required)
+3. If a page fails any check:
+
+   * Log which check failed
+   * Retry after re-rendering/rebuilding
+4. Once all 3 pass, print:
+
+```
+✅ Pages ready for Paddle submission:
+Terms of Service: https://typebeatz.voodoo808.com/terms-of-service
+Privacy Policy: https://typebeatz.voodoo808.com/privacy-policy
+Refund Policy: https://typebeatz.voodoo808.com/refund-policy
+Pricing page: https://typebeatz.voodoo808.com/pricing
+```
+
+---
+
+### **Step 5 – Deliverables**
+
+* [ ] `/terms-of-service` live with content above
+* [ ] `/privacy-policy` live with content above
+* [ ] `/refund-policy` live with content above
+* [ ] All footer links working and correct
+* [ ] Pricing page/section live
+* [ ] Final tested URLs output for Paddle
+
+---
+
+If you want, I can also **write the exact content** for each of those 3 pages so you can just paste it in and skip the legal writing step.
+Do you want me to prepare those ready-to-paste texts next?

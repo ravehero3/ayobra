@@ -23,11 +23,9 @@ const footerSections = [
   {
     title: "Legal",
     links: [
-      { name: "Privacy Policy", href: "/privacy" },
-      { name: "Terms & Conditions", href: "/terms" },
-      { name: "Refund Policy", href: "/refund" },
-      { name: "License Agreement", href: "/license" },
-      { name: "EULA", href: "/eula" }
+      { name: "Terms & Conditions", href: "/terms-of-service" },
+      { name: "Privacy Policy", href: "/privacy-policy" },
+      { name: "Refund Policy", href: "/refund-policy" }
     ]
   }
 ];

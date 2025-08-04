@@ -7,6 +7,9 @@ import { ClerkProvider } from "@clerk/clerk-react";
 import Home from "@/pages/home";
 import UserProfile from "@/pages/user-profile";
 import NotFound from "@/pages/not-found";
+import Terms from "@/pages/terms";
+import Privacy from "@/pages/privacy";
+import Refund from "@/pages/refund";
 
 // Import Clerk publishable key
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
@@ -26,16 +29,10 @@ function Router() {
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/profile" component={UserProfile} />
-      <Route path="/privacy" component={() => import("@/pages/privacy").then(m => m.default)} />
-      <Route path="/terms" component={() => import("@/pages/terms").then(m => m.default)} />
-      <Route path="/refund" component={() => import("@/pages/refund").then(m => m.default)} />
-      <Route path="/license" component={() => import("@/pages/license").then(m => m.default)} />
-      <Route path="/eula" component={() => import("@/pages/eula").then(m => m.default)} />
-      <Route path="/changelog" component={() => import("@/pages/changelog").then(m => m.default)} />
-      <Route path="/support" component={() => import("@/pages/support").then(m => m.default)} />
-      <Route path="/docs" component={() => import("@/pages/docs").then(m => m.default)} />
-      <Route path="/tutorials" component={() => import("@/pages/tutorials").then(m => m.default)} />
-      <Route path="/contact" component={() => import("@/pages/contact").then(m => m.default)} />
+      <Route path="/terms-of-service" component={Terms} />
+      <Route path="/privacy-policy" component={Privacy} />
+      <Route path="/refund-policy" component={Refund} />
+      <Route path="/pricing" component={Home} />
       <Route component={NotFound} />
     </Switch>
   );
