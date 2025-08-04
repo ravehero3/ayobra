@@ -21,14 +21,14 @@ const features = [
 
 const featureImages = [
   {
-    src: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=600",
-    alt: "Waveform editing interface showing audio visualization",
+    src: "@assets/the world is yours_1754313372269.jpg",
+    alt: "Professional music production workspace",
     title: "Smart Audio Processing",
     description: "Advanced waveform analysis with real-time playback and precise audio positioning for perfect video synchronization."
   },
   {
-    src: "https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=600",
-    alt: "Video generation progress interface with concurrent processing",
+    src: "@assets/3tfipyGbY74TjEyvBjUyagtSpI_1754313362951.mp4",
+    alt: "Beat video creation in action",
     title: "Concurrent Processing",
     description: "Generate multiple videos simultaneously with real-time progress tracking and instant cancellation capabilities."
   }
