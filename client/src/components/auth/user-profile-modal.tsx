@@ -5,7 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { SignedIn, SignedOut, SignInButton, UserButton, useUser, useAuth } from '@clerk/clerk-react';
+// Removed Clerk component imports - using custom auth state instead
+import { useAuth } from '@/hooks/use-auth';
 import { X, User, Mail, Settings, LogOut, Edit, Camera } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -24,8 +25,7 @@ interface UserProfileModalProps {
 }
 
 export function UserProfileModal({ isOpen, onClose }: UserProfileModalProps) {
-  const { user, isLoaded } = useUser();
-  const { signOut } = useAuth();
+  const { user, loading, signOut } = useAuth();
   const { toast } = useToast();
   const [isEditing, setIsEditing] = useState(false);
 
@@ -67,7 +67,7 @@ export function UserProfileModal({ isOpen, onClose }: UserProfileModalProps) {
   };
 
   // If loading, show loading state
-  if (!isLoaded) {
+  if (loading) {
     return (
       <Dialog open={isOpen} onOpenChange={onClose}>
         <DialogContent className="sm:max-w-md bg-gray-800 border-gray-700">
@@ -87,8 +87,7 @@ export function UserProfileModal({ isOpen, onClose }: UserProfileModalProps) {
       <DialogContent className="sm:max-w-md bg-gray-800 border-gray-700">
         <DialogHeader className="relative">
           <DialogTitle className="text-white text-xl font-semibold">
-            <SignedIn>Profile Settings</SignedIn>
-            <SignedOut>Sign In Required</SignedOut>
+            {user ? 'Profile Settings' : 'Sign In Required'}
           </DialogTitle>
           <Button
             variant="ghost"
@@ -100,7 +99,7 @@ export function UserProfileModal({ isOpen, onClose }: UserProfileModalProps) {
           </Button>
         </DialogHeader>
 
-        <SignedOut>
+        {!user ? (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -113,15 +112,11 @@ export function UserProfileModal({ isOpen, onClose }: UserProfileModalProps) {
               <p className="text-gray-300">Please sign in to view your profile</p>
               <p className="text-sm text-gray-400">Create an account or sign in to access your personal dashboard</p>
             </div>
-            <SignInButton mode="modal">
-              <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
-                Sign In / Sign Up
-              </Button>
-            </SignInButton>
+            <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white" disabled>
+              Authentication Not Configured
+            </Button>
           </motion.div>
-        </SignedOut>
-
-        <SignedIn>
+        ) : (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -216,7 +211,7 @@ export function UserProfileModal({ isOpen, onClose }: UserProfileModalProps) {
               </Button>
             </div>
           </motion.div>
-        </SignedIn>
+        )}
       </DialogContent>
     </Dialog>
   );

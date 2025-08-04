@@ -1,0 +1,98 @@
+Sure. Here’s a clear, actionable prompt you can give to Replit (or paste into a commit message / task) so they implement everything Paddle needs for domain approval and a working checkout on your React landing page:
+
+---
+
+**Title:**
+Implement Paddle-ready landing page for Type Beatz PRO with legal pages and checkout
+
+**Description / Instructions:**
+We need to fully prepare the landing page `https://typebeatz.voodoo808.com` so it passes **Paddle’s Domain Review** and supports purchasing the \$79 PRO desktop app. Do the following step-by-step:
+
+### 1. **Landing Page Content (visible to user)**
+
+* Add a **prominent product section** describing “Type Beatz”:
+
+  * One-sentence tagline.
+  * Short explanation: “Desktop app for macOS & Windows that turns audio into high-quality beat videos in minutes.”
+  * Key features list (e.g. video generation from audio, export 1920x1080 MP4, drag-and-drop interface, presets, cross-platform support).
+  * Pricing: Show the price **\$79 PRO download** clearly. Include a “Buy Now” button that launches Paddle checkout.
+
+### 2. **Pricing / Offer Details**
+
+* Add a pricing block or dedicated “Pricing” section/page that states:
+
+  * Price: \$79 one-time PRO download.
+  * What’s included: macOS + Windows build, future minor updates (if applicable), license terms.
+  * Refund policy summary (link to full page).
+
+### 3. **Legal & Policy Pages**
+
+Create and expose via top or footer navigation links the following pages:
+
+* **Terms & Conditions**
+
+  * Include: product name, seller legal identity (full legal name / OSVČ with IČO), licensing terms, usage rights, limiting liability, contact info.
+* **Privacy Policy**
+
+  * Explain what user data is collected (emails, analytics, auth/session info), how it’s used/stored, cookies, third-party services (e.g., Paddle, Supabase if used), and user rights.
+* **Refund Policy**
+
+  * Clearly state refund eligibility for the \$79 PRO download (e.g., “30-day refund if not satisfied” or whatever you choose), process to request refund (via Paddle support or contact email).
+* Ensure all three are accessible in navigation or footer on every page.
+
+### 4. **Checkout Integration**
+
+* Embed Paddle checkout for the \$79 PRO product:
+
+  * Use Paddle’s official JavaScript embed (popup or inline) with the correct product ID.
+  * Handle success redirect: after purchase, show a “Thank You” page with download instructions or license delivery.
+  * Setup webhook listener (can be placeholder) to receive purchase events for future automation (e.g., granting access, logging video history).
+
+### 5. **Visual/Brand Elements**
+
+* Ensure there’s a product icon shown on the landing page that matches what’s submitted to Paddle.
+* Display “Type Beatz” branding and the fact it’s available for macOS & Windows.
+
+### 6. **Compliance / Review Readiness**
+
+* Add a small section that summarizes what buyers get (deliverables) so Paddle reviewers instantly see:
+
+  * “What’s included with purchase” bullet list.
+  * “Supported platforms: macOS, Windows.”
+* Include the legal business name (your name as OSVČ) somewhere visible or in the footer (“Powered by \[Your Full Legal Name], IČO: XXXXXXXX”).
+
+### 7. **Technical**
+
+* Ensure site is fully served over HTTPS (already on `https://typebeatz.voodoo808.com`).
+* Validate all links work.
+* Provide a screenshot of the landing page showing pricing, product description, and navigation with policies (for Paddle if requested).
+
+### 8. **Deliverables / Checklist to Report Back**
+
+* [ ] Live product description section.
+* [ ] Pricing section with \$79 PRO clearly displayed.
+* [ ] Terms & Conditions page (with legal name + IČO).
+* [ ] Privacy Policy page.
+* [ ] Refund Policy page.
+* [ ] Paddle checkout embedded and functional (test via sandbox).
+* [ ] Success/thank-you flow after purchase.
+* [ ] Paddle webhook endpoint stub in backend.
+* [ ] Footer or header showing legal identity.
+* [ ] Screenshot(s) collected for Paddle review.
+
+### 9. **Optional but helpful**
+
+* Add “Frequently Asked Questions” snippet: e.g., “What do I get with PRO?”, “How do I download after purchase?”, “What’s your refund policy?”
+* Include a hidden test account or demo flow if needed for review (note: not strictly required for this product type unless Paddle asks).
+
+---
+
+**Credentials / Links to provide to Replit:**
+
+* Paddle product ID and checkout script snippet.
+* Your legal business name and IČO for inclusion in terms.
+* Download URLs or method for delivering the app post-purchase (could be a signed URL or email link).
+
+---
+
+Would you like me to generate boilerplate text for the Terms & Conditions, Privacy Policy, and Refund Policy that you can drop directly into those pages?

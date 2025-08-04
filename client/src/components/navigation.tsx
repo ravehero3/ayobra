@@ -4,15 +4,16 @@ import { motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button"
 import { useLocation } from "wouter";
-import { SignedIn, SignedOut, useUser } from "@clerk/clerk-react";
+// Removed SignedIn, SignedOut imports - using custom useAuth instead
 import { UserIcon } from "@/components/icons/user-icon";
 import { UserProfileModal } from "@/components/auth/user-profile-modal";
+import { useAuth } from "@/hooks/use-auth";
 
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
-  const { user, isLoaded } = useUser();
+  const { user, loading } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {

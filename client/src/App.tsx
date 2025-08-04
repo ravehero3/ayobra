@@ -16,8 +16,9 @@ console.log('Clerk Environment check:', {
   clerkKeyPreview: PUBLISHABLE_KEY ? PUBLISHABLE_KEY.substring(0, 20) + '...' : 'undefined'
 });
 
+// Temporarily allow app to run without Clerk key during migration
 if (!PUBLISHABLE_KEY) {
-  throw new Error('Missing VITE_CLERK_PUBLISHABLE_KEY environment variable');
+  console.warn('Missing VITE_CLERK_PUBLISHABLE_KEY - authentication will be disabled');
 }
 
 function Router() {
@@ -31,6 +32,22 @@ function Router() {
 }
 
 function App() {
+  // Conditional Clerk provider for migration
+  const AppContent = () => (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <div className="dark">
+          <Toaster />
+          <Router />
+        </div>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+
+  if (!PUBLISHABLE_KEY) {
+    return <AppContent />;
+  }
+
   return (
     <ClerkProvider 
       publishableKey={PUBLISHABLE_KEY}
@@ -42,14 +59,7 @@ function App() {
         }
       }}
     >
-      <QueryClientProvider client={queryClient}>
-        <TooltipProvider>
-          <div className="dark">
-            <Toaster />
-            <Router />
-          </div>
-        </TooltipProvider>
-      </QueryClientProvider>
+      <AppContent />
     </ClerkProvider>
   );
 }
