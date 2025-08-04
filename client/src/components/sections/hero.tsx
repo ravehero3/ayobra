@@ -20,7 +20,7 @@ export default function Hero() {
           className="font-bold mb-6 leading-tight"
           style={{ 
             fontSize: '85px',
-            letterSpacing: '-50px',
+            letterSpacing: '-0.05em',
             fontFamily: 'Inter, sans-serif'
           }}
         >
@@ -36,7 +36,7 @@ export default function Hero() {
           className="mb-12 max-w-3xl mx-auto leading-relaxed"
           style={{ 
             fontSize: '24px',
-            letterSpacing: '50px',
+            letterSpacing: '0.05em',
             color: '#999999',
             fontFamily: 'Inter, sans-serif'
           }}

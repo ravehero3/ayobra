@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Set Inter as the default font */
+body {
+  font-family: 'Inter', sans-serif;
+}
+
 :root {
   /* Framer-inspired color system */
   --background: 218, 25%, 10%; /* #0F111A */
