@@ -26,6 +26,16 @@ function Router() {
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/profile" component={UserProfile} />
+      <Route path="/privacy" component={() => import("@/pages/privacy").then(m => m.default)} />
+      <Route path="/terms" component={() => import("@/pages/terms").then(m => m.default)} />
+      <Route path="/refund" component={() => import("@/pages/refund").then(m => m.default)} />
+      <Route path="/license" component={() => import("@/pages/license").then(m => m.default)} />
+      <Route path="/eula" component={() => import("@/pages/eula").then(m => m.default)} />
+      <Route path="/changelog" component={() => import("@/pages/changelog").then(m => m.default)} />
+      <Route path="/support" component={() => import("@/pages/support").then(m => m.default)} />
+      <Route path="/docs" component={() => import("@/pages/docs").then(m => m.default)} />
+      <Route path="/tutorials" component={() => import("@/pages/tutorials").then(m => m.default)} />
+      <Route path="/contact" component={() => import("@/pages/contact").then(m => m.default)} />
       <Route component={NotFound} />
     </Switch>
   );

@@ -8,16 +8,16 @@ const footerSections = [
       { name: "Features", href: "#features" },
       { name: "Pricing", href: "#pricing" },
       { name: "Download", href: "#download" },
-      { name: "Changelog", href: "#" }
+      { name: "Changelog", href: "/changelog" }
     ]
   },
   {
     title: "Support",
     links: [
-      { name: "Documentation", href: "#" },
-      { name: "Tutorials", href: "#" },
-      { name: "Contact", href: "mailto:app@voodoo808.com" },
-      { name: "Discord", href: "#" }
+      { name: "Documentation", href: "/docs" },
+      { name: "Tutorials", href: "/tutorials" },
+      { name: "Contact", href: "/contact" },
+      { name: "Discord", href: "#discord" }
     ]
   },
   {
@@ -33,9 +33,9 @@ const footerSections = [
 ];
 
 const socialLinks = [
-  { icon: Twitter, href: "#", label: "Twitter" },
-  { icon: Youtube, href: "#", label: "YouTube" },
-  { icon: Github, href: "#", label: "GitHub" }
+  { icon: Twitter, href: "#twitter", label: "Twitter" },
+  { icon: Youtube, href: "#youtube", label: "YouTube" },
+  { icon: Github, href: "#github", label: "GitHub" }
 ];
 
 export default function Footer() {
